@@ -1,6 +1,6 @@
 package com.bca.lol.filesimporter.filedata
 
-sealed class LotData extends FileData {
+case class LotData() extends FileData {
   var surrogateNumber: String = _
   var saleNumber: String = _
   var lotNumber: String = _

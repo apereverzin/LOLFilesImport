@@ -32,12 +32,12 @@ class DirectoryProcessor {
     val files = filesExtractor.extractFiles ( directoryName )
     
     var res = filesValidator.validateFiles ( files.map ( _.getName ) )    
-    if ( res.hasErrors ) return res
+    if ( res.hasNoErrors ) return res
     
     val importedData = filesParser.parseFiles ( files )
 
     res = filesContentValidator.validateFilesContent ( importedData )    
-    if ( res.hasErrors ) return res
+    if ( res.hasNoErrors ) return res
     
     res
   }

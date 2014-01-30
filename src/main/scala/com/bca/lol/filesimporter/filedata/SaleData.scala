@@ -1,11 +1,10 @@
 package com.bca.lol.filesimporter.filedata
 
-sealed class SaleData extends FileData {
-  var saleNumber: String = _
-  var saleCode: String = _
-  var saleDescription: String = _
-  var userGroupCode: String = _
-  var saleDate: String = _
-  var saleTime: String = _
-  var saleVersion: String = _
-}
+case class SaleData( 
+  saleNumber: String = "",
+  saleCode: String = "",
+  saleDescription: String = "",
+  userGroupCode: String = "",
+  saleDate: String = "",
+  saleTime: String = "",
+  saleVersion: String = "") extends FileData

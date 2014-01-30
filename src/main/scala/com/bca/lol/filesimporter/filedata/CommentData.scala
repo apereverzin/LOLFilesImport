@@ -1,8 +1,3 @@
 package com.bca.lol.filesimporter.filedata
 
-sealed class CommentData extends FileData {
-  var unitSurrogate: String = _
-  var commentType: String = _
-  var sequenceNumber: String = _
-  var comment: String = _
-}
+case class CommentData(unitSurrogate: String = "", commentType: String = "", sequenceNumber: String = "", comment: String = "") extends FileData

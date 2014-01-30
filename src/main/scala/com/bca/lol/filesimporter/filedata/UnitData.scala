@@ -1,6 +1,6 @@
 package com.bca.lol.filesimporter.filedata
 
-sealed class UnitData extends FileData {
+case class UnitData extends FileData {
   var unitSurrogate: String = _
   var displaySequence: String = _
   var registrationNumber: String = _

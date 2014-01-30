@@ -1,6 +1,8 @@
 package com.bca.lol.filesimporter.data
 
-class Sale {
+import scala.collection.mutable.ListBuffer
+
+case class Sale {
   var context: Int = _
   var id: Int = _
   var name: String = _
@@ -19,5 +21,9 @@ class Sale {
   var ims: Int = _
   var defaultLanguage: String = _
   var documentLanguage: String = _
-  var lots : List[Lot] = _
+  
+  private val lots : ListBuffer[Lot] = ListBuffer[Lot]()
+  
+  def addLot(lot: Lot) = lots += lot
+  def getLots = lots.toList
 }

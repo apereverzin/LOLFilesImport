@@ -26,49 +26,49 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     val mockImportedData = buildMockImportedData
 
     val directoryProcessor = new DirectoryProcessor
-    
+
     val mockFilesExtractor = mock[FilesExtractor]
     directoryProcessor.filesExtractor = mockFilesExtractor
-    when ( mockFilesExtractor.extractFiles ( DIR ) ).thenReturn ( mockFiles )
+    when(mockFilesExtractor.extractFiles(DIR)).thenReturn(mockFiles)
 
     val mockFilesValidator = mock[FilesValidator]
     directoryProcessor.filesValidator = mockFilesValidator
-    when ( mockFilesValidator.validateFiles ( mockFiles.map ( _.getName ) ) ).thenReturn ( new ImportResult )
-    
+    when(mockFilesValidator.validateFiles(mockFiles.map(_.getName))).thenReturn(new ImportResult)
+
     val mockFilesParser = mock[FilesParser]
     directoryProcessor.filesParser = mockFilesParser
-    when ( mockFilesParser.parseFiles ( mockFiles ) ).thenReturn( mockImportedData )
-    
+    when(mockFilesParser.parseFiles(mockFiles)).thenReturn(mockImportedData)
+
     val mockFilesContentValidator = mock[FilesContentValidator]
     directoryProcessor.filesContentValidator = mockFilesContentValidator
-    when ( mockFilesContentValidator.validateFilesContent ( mockImportedData ) ).thenReturn ( new ImportResult )
-    
+    when(mockFilesContentValidator.validateFilesContent(mockImportedData)).thenReturn(new ImportResult)
+
     // when
-    val res = directoryProcessor.processDirectory ( LANG, DIR )
-    
+    val res = directoryProcessor.processDirectory(LANG, DIR)
+
     // then
-    assert ( !res.hasErrors )
+    assert(res hasNoErrors)
   }
-  
+
   private def buildMockFiles = {
-    val mockControlFile = buildMockFile ( DirectoryProcessor.CONTROL )
-    val mockSalelFile = buildMockFile ( DirectoryProcessor.SALE )
-    val mockUnitFile = buildMockFile ( DirectoryProcessor.UNIT )
-    val mockLotFile = buildMockFile ( DirectoryProcessor.LOT )
-    val mockOptionFile = buildMockFile ( DirectoryProcessor.OPTION )
-    val mockConditionFile = buildMockFile ( DirectoryProcessor.CONDS )
-    val mockCommentFile = buildMockFile ( DirectoryProcessor.UCOMMENT )
-    
-    List[File] ( mockControlFile, mockSalelFile, mockUnitFile, mockLotFile, mockOptionFile, mockConditionFile, mockCommentFile )
+    val mockControlFile = buildMockFile(DirectoryProcessor.CONTROL)
+    val mockSalelFile = buildMockFile(DirectoryProcessor.SALE)
+    val mockUnitFile = buildMockFile(DirectoryProcessor.UNIT)
+    val mockLotFile = buildMockFile(DirectoryProcessor.LOT)
+    val mockOptionFile = buildMockFile(DirectoryProcessor.OPTION)
+    val mockConditionFile = buildMockFile(DirectoryProcessor.CONDS)
+    val mockCommentFile = buildMockFile(DirectoryProcessor.UCOMMENT)
+
+    List[File](mockControlFile, mockSalelFile, mockUnitFile, mockLotFile, mockOptionFile, mockConditionFile, mockCommentFile)
   }
-  
-  private def buildMockFile ( fileName: String ) = {
+
+  private def buildMockFile(fileName: String) = {
     val mockFile = mock[File]
-    when ( mockFile.getName ).thenReturn ( fileName )
+    when(mockFile.getName).thenReturn(fileName)
     mockFile
   }
 
   private def buildMockImportedData = {
-    ( new ControlData, List[SaleData](), List[UnitData](), List[LotData](), List[OptionData](), List[ConditionData](), List[CommentData]() )
+    (new ControlData, List[SaleData](), List[UnitData](), List[LotData](), List[OptionData](), List[ConditionData](), List[CommentData]())
   }
 }

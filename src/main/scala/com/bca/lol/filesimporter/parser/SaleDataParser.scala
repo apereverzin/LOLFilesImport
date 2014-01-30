@@ -4,17 +4,15 @@ import com.bca.lol.filesimporter.filedata.SaleData
 
 class SaleDataParser extends FileLineParser {
 
-  override def parseLine ( line: String ) = {
-    val saleData = new SaleData
+  override def parseLine ( line: String ) = {    
+    val saleNumber = takeFirstField ( line, 6 )
+    val saleCode = takeNextField ( line, 3 )
+    val saleDescription = takeNextField ( line, 25 )
+    val userGroupCode = takeNextField ( line, 4 )
+    val saleDate = takeNextField ( line, 7 )
+    val saleTime = takeNextField ( line, 6 )
+    val saleVersion = takeNextField ( line, 3 )
     
-    saleData.saleNumber = takeFirstField ( line, 6 )
-    saleData.saleCode = takeNextField ( line, 3 )
-    saleData.saleDescription = takeNextField ( line, 25 )
-    saleData.userGroupCode = takeNextField ( line, 4 )
-    saleData.saleDate = takeNextField ( line, 7 )
-    saleData.saleTime = takeNextField ( line, 6 )
-    saleData.saleVersion = takeNextField ( line, 3 )
-    
-    saleData
+    SaleData(saleNumber, saleCode, saleDescription, userGroupCode, saleDate, saleTime, saleVersion)
   }
 }

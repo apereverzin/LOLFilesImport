@@ -1,6 +1,6 @@
 package com.bca.lol.filesimporter.filedata
 
-sealed class ControlData ( sn : Int, un : Int, ln : Int, on : Int, condn : Int, commn : Int ) extends FileData {
+case class ControlData ( sn : Int, un : Int, ln : Int, on : Int, condn : Int, commn : Int ) extends FileData {
   
   def this() =  this( 0, 0, 0, 0, 0, 0 )
   
