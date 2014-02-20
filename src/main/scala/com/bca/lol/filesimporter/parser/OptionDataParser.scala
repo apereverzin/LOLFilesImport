@@ -2,15 +2,16 @@ package com.bca.lol.filesimporter.parser
 
 import com.bca.lol.filesimporter.filedata.OptionData
 
-class OptionDataParser extends FileLineParser {
+class OptionDataParser extends FileParser {
 
-  override def parseLine ( line: String ) = {
+  override def parseLine(line: String) = {
     val optionData = new OptionData
-    
-    optionData.unitSurrogate = takeFirstField ( line, 7 )
-    optionData.displaySequence = takeNextField ( line, 3 )
-    optionData.optionDescription = takeNextField ( line, 30 )
-    
+
+    takeFirstField(line, 7)
+    optionData.displaySequence = takeNextField(line, 3)
+    optionData.optionDescription = takeNextField(line, 30)
+    optionData.unitSurrogate = takeNextField(line, 9)
+
     optionData
   }
 }

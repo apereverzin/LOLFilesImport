@@ -87,7 +87,7 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
     assert(res.getErrors(0).contains("sales"))
   }
 
-  /*"FilesContentValidator" should "fail to validate wrong number of units" in {
+  "FilesContentValidator" should "fail to validate wrong number of units" in {
     // given
     val filesContentValidator = new FilesContentValidator
 
@@ -177,5 +177,5 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
     unit.unitSurrogate = surrogateNumber
 
     unit
-  }*/
+  }
 }

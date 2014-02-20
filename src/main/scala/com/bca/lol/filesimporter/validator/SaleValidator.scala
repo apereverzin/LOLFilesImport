@@ -16,5 +16,5 @@ class SaleValidator {
   }
   
   def buildSaleNumberError ( lot: LotData, saleNumber: String ) =
-    String.format ( "Wrong sale number for lot %s: expected %s, found %s", lot.lotNumber, lot.saleNumber, saleNumber )
+    s"Wrong sale number for lot $lot.lotNumber: expected $lot.saleNumber, found $saleNumber"
 }

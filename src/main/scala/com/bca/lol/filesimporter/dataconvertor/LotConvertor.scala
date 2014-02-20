@@ -8,8 +8,6 @@ import com.bca.lol.filesimporter.filedata.CommentData
 import com.bca.lol.filesimporter.data.Lot
 import scala.util.Try
 import scala.util.Success
-import scala.util.Success
-import scala.util.Failure
 import scala.util.Failure
 
 class LotConvertor {

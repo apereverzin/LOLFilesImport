@@ -2,14 +2,15 @@ package com.bca.lol.filesimporter.parser
 
 import org.scalatest.FlatSpec
 import org.scalatest.BeforeAndAfter
+import scala.Array
 
 class ControlDataParserTest extends FlatSpec with BeforeAndAfter {
-  var controlDataParser : ControlDataParser = _
+  var controlDataParser: ControlDataParser = _
 
   before {
     controlDataParser = new ControlDataParser
   }
-  
+
   "ControlDataParser" should "parse correct data" in {
     // given
     val line1 = "SALE    1"
@@ -18,16 +19,16 @@ class ControlDataParserTest extends FlatSpec with BeforeAndAfter {
     val line4 = "CONDS   5"
     val line5 = "LOT     10"
     val line6 = "OPTION  53"
-        
+
     // when
-    val controlData = controlDataParser.parseLines ( Array[String] ( line1, line2, line3, line4, line5, line6) )
-    
+    val controlData = controlDataParser.parseControlFileLines(Array[String](line1, line2, line3, line4, line5, line6).iterator)
+
     // then
-    assert ( controlData.salesNumber == 1 )
-    assert ( controlData.commentsNumber == 10 )
-    assert ( controlData.unitsNumber == 10 )
-    assert ( controlData.conditionsNumber == 5 )
-    assert ( controlData.lotsNumber == 10 )
-    assert ( controlData.optionsNumber ==53 )
+    assert(controlData.salesNumber == 1)
+    assert(controlData.commentsNumber == 10)
+    assert(controlData.unitsNumber == 10)
+    assert(controlData.conditionsNumber == 5)
+    assert(controlData.lotsNumber == 10)
+    assert(controlData.optionsNumber == 53)
   }
 }

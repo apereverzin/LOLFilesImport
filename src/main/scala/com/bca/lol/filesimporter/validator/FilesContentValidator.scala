@@ -17,29 +17,28 @@ class FilesContentValidator {
   var conditionsValidator = new ConditionsValidator
   var commentsValidator = new CommentsValidator
 
-  def validateFilesContent(importedData: (ControlData, List[SaleData], List[UnitData], List[LotData], List[OptionData], List[ConditionData], List[CommentData])): ImportResult = {
+  def validateFilesContent(importedData: (ControlData, List[SaleData], List[UnitData], List[LotData], List[OptionData], 
+      List[ConditionData], List[CommentData])): ImportResult = {
 
     var res = validateNumberOfEntries(importedData._1, importedData._2, importedData._3, importedData._4,
       importedData._5, importedData._6, importedData._7)
-    if (res.hasNoErrors) return res
+    if (res hasErrors) return res
 
     res = unitsValidator.validateUnits(importedData._3, importedData._4)
-    if (res.hasNoErrors) return res
+    if (res hasErrors) return res
 
     res = lotsValidator.validateLots(importedData._2(0), importedData._4)
-    if (res.hasNoErrors) return res
+    if (res hasErrors) return res
 
     val unitSurrogates = Set.empty ++ (importedData._3.map(_.unitSurrogate))
 
     res = optionsValidator.validateOptions(unitSurrogates, importedData._5)
-    if (res.hasNoErrors) return res
+    if (res hasErrors) return res
 
     res = conditionsValidator.validateConditions(unitSurrogates, importedData._6)
-    if (res.hasNoErrors) return res
+    if (res hasErrors) return res
 
-    res = commentsValidator.validateComments(unitSurrogates, importedData._7)
-
-    res
+    commentsValidator.validateComments(unitSurrogates, importedData._7)
   }
 
   private def validateNumberOfEntries(control: ControlData, sales: List[SaleData], units: List[UnitData], lots: List[LotData],
@@ -57,6 +56,5 @@ class FilesContentValidator {
     res
   }
 
-  def buildError(name: String, expected: Int, found: Int) = String.format("Wrong number of %s: expected %s, found %s",
-    name, expected.toString, found.toString)
+  def buildError(name: String, expected: Int, found: Int) = s"Wrong number of $name: expected $expected, found $found"
 }

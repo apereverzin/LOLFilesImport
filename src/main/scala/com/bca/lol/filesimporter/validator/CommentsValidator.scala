@@ -24,8 +24,8 @@ class CommentsValidator {
   }
 
   def buildCommentUnitSurrogateError(unitSurrogate: String) =
-    String.format("Wrong unit surrogate %s for comment", unitSurrogate)
+    s"Wrong unit surrogate $unitSurrogate for comment"
 
   def buildCommentUnitSurrogateAndSequenceNumberDuplicationError(unitSurrogate: String, sequenceNumber: String) =
-    String.format("Duplicate unit surrogate %s and sequence number %s for comment", unitSurrogate, sequenceNumber)
+    s"Duplicate unit surrogate $unitSurrogate and sequence number $sequenceNumber for comment"
 }

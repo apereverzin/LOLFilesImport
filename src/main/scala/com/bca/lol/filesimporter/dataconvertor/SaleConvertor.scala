@@ -4,9 +4,11 @@ import com.bca.lol.filesimporter.filedata._
 import com.bca.lol.filesimporter.data._
 
 class SaleConvertor {
-  def convertSale ( sale: SaleData ) = {
+  var lotsConvertor = new LotsConvertor
+  def convertSale(sale: SaleData, units: List[UnitData], lots: List[LotData], options: List[OptionData], 
+      conditions: List[ConditionData], comments: List[CommentData]) = {
     val convertedSale = new Sale
-    
+
     convertedSale.name = sale.saleNumber
     convertedSale.description = sale.saleDescription
     convertedSale.auctionEnd = 0L

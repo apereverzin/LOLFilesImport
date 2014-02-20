@@ -2,7 +2,7 @@ package com.bca.lol.filesimporter.data
 
 import scala.collection.mutable.ListBuffer
 
-case class Sale {
+case class Sale() {
   var context: Int = _
   var id: Int = _
   var name: String = _

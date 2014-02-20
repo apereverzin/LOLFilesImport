@@ -25,7 +25,7 @@ class CommentsValidatorTest extends FlatSpec with BeforeAndAfter with BuildingMe
     val res = commentsValidator.validateComments(unitSurrogateNumbers, comments)
 
     // then
-    assert(res.hasNoErrors)
+    assert(res hasNoErrors)
   }
 
   "CommentsValidator" should "fail validation for wrong unit surrogate" in {

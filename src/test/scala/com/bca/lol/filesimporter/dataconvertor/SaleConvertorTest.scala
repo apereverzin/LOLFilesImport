@@ -13,37 +13,38 @@ class SaleConvertorTest extends FlatSpec with BeforeAndAfter with BuildingMethod
   val SaleDate = "1140131"
   val SaleTime = "110000"
   val SaleVersion = "1"
-    
-  var saleConvertor : SaleConvertor = _
-  
+
+  var saleConvertor: SaleConvertor = _
+
   before {
     saleConvertor = new SaleConvertor
   }
-  
+
   "SaleConvertor" should "convert valid sale" in {
     // given
-    val sale = buildSaleData ( SaleNumber, saleDescription = SaleDescription, saleCode = SaleCode, userGroupCode = UserGroupCode,
-      saleDate = SaleDate, saleTime = SaleTime, saleVersion = SaleVersion )
-    
+    val sale = buildSaleData(SaleNumber, saleDescription = SaleDescription, saleCode = SaleCode, userGroupCode = UserGroupCode,
+      saleDate = SaleDate, saleTime = SaleTime, saleVersion = SaleVersion)
+
     // when
-    val convertedSale = saleConvertor.convertSale ( sale )
-    
+    val convertedSale = saleConvertor.convertSale(sale, List[UnitData](), List[LotData](), List[OptionData](), 
+      List[ConditionData](), List[CommentData]())
+
     // then
-    assert ( convertedSale.name == SaleNumber )
-    assert ( convertedSale.description == SaleDescription )
-    assert ( convertedSale.auctionEnd == 0L )
-    assert ( convertedSale.auctionStart == 0L )
-    assert ( convertedSale.status == 0 )
-    assert ( convertedSale.accessControl == 0 )
-    assert ( convertedSale.locked == 0 )
-    assert ( convertedSale.created > 0L )
-    assert ( convertedSale.catalogType == 0 )
-    assert ( convertedSale.extended == "" )
-    assert ( convertedSale.statusText == "" )
-    assert ( convertedSale.reference == "" )
-    assert ( convertedSale.lastModified > 0L )
-    assert ( convertedSale.ims == 0 )
-    assert ( convertedSale.defaultLanguage == "" )
-    assert ( convertedSale.documentLanguage == "" )
+    assert(convertedSale.name == SaleNumber)
+    assert(convertedSale.description == SaleDescription)
+    assert(convertedSale.auctionEnd == 0L)
+    assert(convertedSale.auctionStart == 0L)
+    assert(convertedSale.status == 0)
+    assert(convertedSale.accessControl == 0)
+    assert(convertedSale.locked == 0)
+    assert(convertedSale.created > 0L)
+    assert(convertedSale.catalogType == 0)
+    assert(convertedSale.extended == "")
+    assert(convertedSale.statusText == "")
+    assert(convertedSale.reference == "")
+    assert(convertedSale.lastModified > 0L)
+    assert(convertedSale.ims == 0)
+    assert(convertedSale.defaultLanguage == "")
+    assert(convertedSale.documentLanguage == "")
   }
 }

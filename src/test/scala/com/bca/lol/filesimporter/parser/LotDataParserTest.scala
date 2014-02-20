@@ -17,7 +17,7 @@ class LotDataParserTest extends FlatSpec with BeforeAndAfter {
     val lotData = lotDataParser.parseLine ( "000000002SUNK74CGV001                                                            00042000005300" )
     
     // then
-    assert ( lotData.surrogateNumber == "000000002" )
+    assert ( lotData.unitSurrogate == "000000002" )
     assert ( lotData.saleNumber == "SUNK74" )
     assert ( lotData.lotNumber == "CGV001" )
     assert ( lotData.description == "" )

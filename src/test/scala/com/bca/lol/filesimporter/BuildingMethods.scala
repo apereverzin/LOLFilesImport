@@ -28,7 +28,7 @@ trait BuildingMethods {
     val lotData = new LotData
 
     lotData.saleNumber = saleNumber
-    lotData.surrogateNumber = surrogateNumber
+    lotData.unitSurrogate = surrogateNumber
     lotData.lotNumber = lotNumber
 
     lotData
@@ -55,6 +55,13 @@ trait BuildingMethods {
   }
 
   def buildCommentData(unitSurrogate: String = "", commentType: String = "", sequenceNumber: String = "", comment: String = "") = {
-    CommentData(unitSurrogate, commentType, sequenceNumber, comment)
+    val commentData = new CommentData
+
+    commentData.commentType = commentType
+    commentData.sequenceNumber = sequenceNumber
+    commentData.comment = comment
+    commentData.unitSurrogate = unitSurrogate
+
+    commentData
   }
 }

@@ -17,7 +17,7 @@ class CommentDataParserTest extends FlatSpec with BeforeAndAfter {
     val commentData = commentDataParser.parseLine ( "0000002X001Grade 4                                                          000000002" )
     
     // then
-    assert ( commentData.unitSurrogate == "0000002" )
+    assert ( commentData.unitSurrogate == "000000002" )
     assert ( commentData.commentType == "X" )
     assert ( commentData.sequenceNumber == "001" )
     assert ( commentData.comment == "Grade 4" )
