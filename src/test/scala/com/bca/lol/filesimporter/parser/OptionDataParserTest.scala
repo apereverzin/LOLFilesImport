@@ -17,7 +17,7 @@ class OptionDataParserTest extends FlatSpec with BeforeAndAfter {
     val optionData = optionDataParser.parseLine ( "0000002001SH - 6(2bmw)stps to 148k 12/11000000002" )
     
     // then
-    assert ( optionData.unitSurrogate == "000000002" )
+    assert ( optionData.surrogateNumber == "000000002" )
     assert ( optionData.displaySequence == "001" )
     assert ( optionData.optionDescription == "SH - 6(2bmw)stps to 148k 12/11" )
   }

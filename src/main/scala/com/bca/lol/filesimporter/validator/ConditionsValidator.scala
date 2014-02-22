@@ -12,7 +12,7 @@ class ConditionsValidator {
     val unitSurrogateandConditions = scala.collection.mutable.Set[(String, String)]()
 
     for (condition <- conditions) {
-      val unitSurrogate = condition.unitSurrogate
+      val unitSurrogate = condition.surrogateNumber
       if (!unitSurrogateNumbers.contains(unitSurrogate)) res.addError(buildConditionUnitSurrogateError(unitSurrogate))
       if (unitSurrogateandConditions.contains((unitSurrogate, condition.inspCompCondDesc)))
         res.addError(buildUnitSurrogateAndConditionDuplicationError(unitSurrogate, condition.inspCompCondDesc))

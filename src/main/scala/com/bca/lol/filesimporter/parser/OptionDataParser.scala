@@ -10,7 +10,7 @@ class OptionDataParser extends FileParser {
     takeFirstField(line, 7)
     optionData.displaySequence = takeNextField(line, 3)
     optionData.optionDescription = takeNextField(line, 30)
-    optionData.unitSurrogate = takeNextField(line, 9)
+    optionData.surrogateNumber = takeNextField(line, 9)
 
     optionData
   }

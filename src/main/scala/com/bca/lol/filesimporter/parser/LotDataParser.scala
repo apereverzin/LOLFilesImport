@@ -7,7 +7,7 @@ class LotDataParser extends FileParser {
   override def parseLine(line: String) = {
     val lotData = new LotData
 
-    lotData.unitSurrogate = takeFirstField(line, 9)
+    lotData.surrogateNumber = takeFirstField(line, 9)
     lotData.saleNumber = takeNextField(line, 6)
     lotData.lotNumber = takeNextField(line, 6)
     lotData.description = takeNextField(line, 60)

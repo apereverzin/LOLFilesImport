@@ -2,9 +2,7 @@ package com.bca.lol.filesimporter.dataconvertor
 
 import com.bca.lol.filesimporter.filedata.CommentData
 import com.bca.lol.filesimporter.data.Comment
-import scala.util.Try
-import scala.util.Success
-import scala.util.Failure
+import scala.util.{Try, Success, Failure}
 
 class CommentConvertor {
   def convertComment (commentData: CommentData): Try[Comment] = {

@@ -22,10 +22,10 @@ class LotsValidator {
       else
         lotNumbers += lot.lotNumber
 
-      if (lotSurrogateNumbers.contains(lot.unitSurrogate))
-        res.addError(buildLotSurrogateNumberDuplicationError(lot.unitSurrogate))
+      if (lotSurrogateNumbers.contains(lot.surrogateNumber))
+        res.addError(buildLotSurrogateNumberDuplicationError(lot.surrogateNumber))
       else
-        lotSurrogateNumbers += lot.unitSurrogate
+        lotSurrogateNumbers += lot.surrogateNumber
     }
 
     res

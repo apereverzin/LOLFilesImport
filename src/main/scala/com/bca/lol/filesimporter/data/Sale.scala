@@ -22,8 +22,5 @@ case class Sale() {
   var defaultLanguage: String = _
   var documentLanguage: String = _
   
-  private val lots : ListBuffer[Lot] = ListBuffer[Lot]()
-  
-  def addLot(lot: Lot) = lots += lot
-  def getLots = lots.toList
+  var lots : List[Lot] = _
 }

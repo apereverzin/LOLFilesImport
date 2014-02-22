@@ -1,11 +1,13 @@
 package com.bca.lol.filesimporter.dataconvertor
 
-import com.bca.lol.filesimporter.filedata._
-import com.bca.lol.filesimporter.data._
+import com.bca.lol.filesimporter.filedata.{SaleData, UnitData, LotData, OptionData, ConditionData, CommentData}
+import com.bca.lol.filesimporter.data.Sale
+import com.bca.lol.filesimporter.directoryprocessor.ImportResult
 
 class SaleConvertor {
   var lotsConvertor = new LotsConvertor
-  def convertSale(sale: SaleData, units: List[UnitData], lots: List[LotData], options: List[OptionData], 
+  
+  def convertSale(res: ImportResult, sale: SaleData, units: List[UnitData], lots: List[LotData], options: List[OptionData], 
       conditions: List[ConditionData], comments: List[CommentData]) = {
     val convertedSale = new Sale
 
@@ -25,6 +27,8 @@ class SaleConvertor {
     convertedSale.ims = 0
     convertedSale.defaultLanguage = ""
     convertedSale.documentLanguage = ""
+      
+    convertedSale.lots = lotsConvertor.convertLots(res, units, lots, options, conditions, comments)
 
     convertedSale
   }

@@ -45,7 +45,7 @@ class DirectoryProcessor extends Actor with ActorLogging {
     res = filesContentValidator.validateFilesContent(importedData)
     if (res.hasErrors) return res
     
-    saleConvertor.convertSale(importedData._2(0), importedData._3, importedData._4, importedData._5, importedData._6, importedData._7)
+    saleConvertor.convertSale(res, importedData._2(0), importedData._3, importedData._4, importedData._5, importedData._6, importedData._7)
 
     res
   }

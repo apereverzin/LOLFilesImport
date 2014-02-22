@@ -11,22 +11,23 @@ class ConditionConvertorTest extends FlatSpec with BeforeAndAfter with BuildingM
   val Status2 = "Status2"
   val ConditionDescription1 = "Descr 1"
   val ConditionDescription2 = "Descr 2"
-    
-  var conditionConvertor : ConditionConvertor = _
-  
+
+  var conditionConvertor: ConditionConvertor = _
+
   before {
     conditionConvertor = new ConditionConvertor
   }
-  
+
   "ConditionConvertor" should "convert valid condition" in {
     // given
     val condition = buildConditionData(desc = ConditionDescription1, status = Status1)
-    
+
     // when
     val convertedCondition = conditionConvertor.convertCondition(condition)
-    
+
     // then
-    assert ( convertedCondition.inspCompCondDesc == ConditionDescription1 )
-    assert ( convertedCondition.status == Status1 )
+    assert(convertedCondition.isSuccess)
+    assert(convertedCondition.get.inspCompCondDesc == ConditionDescription1)
+    assert(convertedCondition.get.status == Status1)
   }
 }

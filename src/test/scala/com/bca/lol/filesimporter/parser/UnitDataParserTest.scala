@@ -17,7 +17,7 @@ class UnitDataParserTest extends FlatSpec with BeforeAndAfter {
     val unitData = unitDataParser.parseLine ( "0000002000000002002XK69 VXD  BMW            320D           25M SPART                       Saloon1        4Diesel         Automatic      199485YGREY                                                                                      10703300000Y00000001120616                                                       Yes                      1111208NExtended                 Y00Margin         0000000" )
     
     //then
-    assert ( unitData.unitSurrogate == "000000002" )
+    assert ( unitData.surrogateNumber == "000000002" )
     assert ( unitData.displaySequence == "002" )
     assert ( unitData.registrationNumber == "XK69 VXD" )
     assert ( unitData.fullMake == "BMW" )

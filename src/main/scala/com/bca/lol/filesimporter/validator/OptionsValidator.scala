@@ -12,7 +12,7 @@ class OptionsValidator {
     val optionSurrogateNumbersAndDisplaySequences = scala.collection.mutable.Set[(String, String)]()
 
     for (option <- options) {
-      val unitSurrogate = option.unitSurrogate
+      val unitSurrogate = option.surrogateNumber
       if (!unitSurrogateNumbers.contains(unitSurrogate)) res.addError(buildOptionUnitSurrogateError(unitSurrogate))
       if (optionSurrogateNumbersAndDisplaySequences.contains((unitSurrogate, option.displaySequence)))
         res.addError(buildOptionUnitSurrogateAndDisplaySequenceDuplicationError(unitSurrogate, option.displaySequence))

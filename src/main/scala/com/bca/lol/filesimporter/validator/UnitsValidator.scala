@@ -14,7 +14,7 @@ class UnitsValidator {
     val unitDisplaySequences = Set[String]()
     val unitSurrogateNumbers = Set[String]()
 
-    lots.foreach(lotSurrogateNumbers += _.unitSurrogate)
+    lots.foreach(lotSurrogateNumbers += _.surrogateNumber)
     
     for (unit <- units) {
       if (unitDisplaySequences.contains(unit.displaySequence))
@@ -22,18 +22,18 @@ class UnitsValidator {
       else
         unitDisplaySequences += unit.displaySequence
 
-      if (unitSurrogateNumbers.contains(unit.unitSurrogate))
-        res.addError(buildUnitSurrogateDuplicationError(unit.unitSurrogate))
+      if (unitSurrogateNumbers.contains(unit.surrogateNumber))
+        res.addError(buildUnitSurrogateDuplicationError(unit.surrogateNumber))
       else
-        unitSurrogateNumbers += unit.unitSurrogate
+        unitSurrogateNumbers += unit.surrogateNumber
 
-      if (!lotSurrogateNumbers.contains(unit.unitSurrogate))
-        res.addError(buildWrongUnitSurrogateError(unit.unitSurrogate))
+      if (!lotSurrogateNumbers.contains(unit.surrogateNumber))
+        res.addError(buildWrongUnitSurrogateError(unit.surrogateNumber))
     }
 
     for (lot <- lots)
-      if (!unitSurrogateNumbers.contains(lot.unitSurrogate))
-        res.addError(buildWrongLotSurrogateError(lot.unitSurrogate))
+      if (!unitSurrogateNumbers.contains(lot.surrogateNumber))
+        res.addError(buildWrongLotSurrogateError(lot.surrogateNumber))
 
     res
   }

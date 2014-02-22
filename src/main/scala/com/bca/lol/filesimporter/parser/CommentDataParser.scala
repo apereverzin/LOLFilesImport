@@ -11,7 +11,7 @@ class CommentDataParser extends FileParser {
     commentData.commentType = takeNextField(line, 1)
     commentData.sequenceNumber = takeNextField(line, 3)
     commentData.comment = takeNextField(line, 65)
-    commentData.unitSurrogate = takeNextField(line, 9)
+    commentData.surrogateNumber = takeNextField(line, 9)
 
     commentData
   }

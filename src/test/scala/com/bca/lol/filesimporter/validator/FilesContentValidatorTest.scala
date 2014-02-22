@@ -1,13 +1,7 @@
 package com.bca.lol.filesimporter.validator
 
 import org.scalatest._
-import com.bca.lol.filesimporter.filedata.ControlData
-import com.bca.lol.filesimporter.filedata.SaleData
-import com.bca.lol.filesimporter.filedata.UnitData
-import com.bca.lol.filesimporter.filedata.LotData
-import com.bca.lol.filesimporter.filedata.ConditionData
-import com.bca.lol.filesimporter.filedata.CommentData
-import com.bca.lol.filesimporter.filedata.OptionData
+import com.bca.lol.filesimporter.filedata._
 import org.scalatest.junit.AssertionsForJUnit
 import org.scalatest.mock._
 import org.mockito.Mockito._
@@ -174,7 +168,7 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
 
   def buildUnit(surrogateNumber: String) = {
     val unit = UnitData()
-    unit.unitSurrogate = surrogateNumber
+    unit.surrogateNumber = surrogateNumber
 
     unit
   }

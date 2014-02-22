@@ -1,17 +1,17 @@
 package com.bca.lol.filesimporter.dataconvertor
 
-import com.bca.lol.filesimporter.filedata.UnitData
-import com.bca.lol.filesimporter.filedata.LotData
-import com.bca.lol.filesimporter.filedata.OptionData
-import com.bca.lol.filesimporter.filedata.ConditionData
-import com.bca.lol.filesimporter.filedata.CommentData
+import com.bca.lol.filesimporter.filedata.{UnitData, LotData, OptionData, ConditionData, CommentData}
 import com.bca.lol.filesimporter.data.Lot
-import scala.util.Try
-import scala.util.Success
-import scala.util.Failure
+import scala.util.{Try, Success, Failure}
+import com.bca.lol.filesimporter.data.LotElement
+import com.bca.lol.filesimporter.directoryprocessor.ImportResult
 
 class LotConvertor {
-  def convertLot(unit: UnitData, lot: LotData, options: List[OptionData] = List[OptionData](),
+  var optionConvertor = new OptionConvertor
+  var conditionConvertor = new ConditionConvertor
+  var commentConvertor = new CommentConvertor
+  
+  def convertLot(res: ImportResult, unit: UnitData, lot: LotData, options: List[OptionData] = List[OptionData](),
     conditions: List[ConditionData] = List[ConditionData](), comments: List[CommentData] = List[CommentData]()): Try[Lot] = {
     val displaySequence = Try[Int](Integer.parseInt(unit.displaySequence))
 
@@ -45,10 +45,18 @@ class LotConvertor {
         lot.displayId = ""
         lot.saleCode = ""
         lot.catalogId = 0
+        
+        options.foreach(o => lot.addOption(optionConvertor.convertOption(o).get))
+        conditions.foreach(c => lot.addCondition(conditionConvertor.convertCondition(c).get))
+        comments.foreach(c => lot.addComment(commentConvertor.convertComment(c).get))
 
         Success(lot)
       }
       case Failure(f) => Failure[Lot](f)
     }
+  }
+
+  def addElement[T <: LotElement](elem: Try[T]) {
+
   }
 }

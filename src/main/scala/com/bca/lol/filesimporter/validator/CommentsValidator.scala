@@ -12,7 +12,7 @@ class CommentsValidator {
     val commentUnitSurrogateAndSequenceNumbers = scala.collection.mutable.Set[(String, String)]()
 
     for (comment <- comments) {
-      val unitSurrogate = comment.unitSurrogate
+      val unitSurrogate = comment.surrogateNumber
       if (!unitSurrogateNumbers.contains(unitSurrogate)) res.addError(buildCommentUnitSurrogateError(unitSurrogate))
       if (commentUnitSurrogateAndSequenceNumbers.contains((unitSurrogate, comment.sequenceNumber)))
         res.addError(buildCommentUnitSurrogateAndSequenceNumberDuplicationError(unitSurrogate, comment.sequenceNumber))

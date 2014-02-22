@@ -18,7 +18,7 @@ trait BuildingMethods {
   def buildUnitData(unitSurrogate: String = "", displaySequence: String = "") = {
     val unitData = new UnitData
 
-    unitData.unitSurrogate = unitSurrogate
+    unitData.surrogateNumber = unitSurrogate
     unitData.displaySequence = displaySequence
 
     unitData
@@ -28,7 +28,7 @@ trait BuildingMethods {
     val lotData = new LotData
 
     lotData.saleNumber = saleNumber
-    lotData.unitSurrogate = surrogateNumber
+    lotData.surrogateNumber = surrogateNumber
     lotData.lotNumber = lotNumber
 
     lotData
@@ -37,7 +37,7 @@ trait BuildingMethods {
   def buildOptionData(unitSurrogate: String = "", displaySequence: String = "", optionDescription: String = "") = {
     val optionData = new OptionData
 
-    optionData.unitSurrogate = unitSurrogate
+    optionData.surrogateNumber = unitSurrogate
     optionData.displaySequence = displaySequence
     optionData.optionDescription = optionDescription
 
@@ -47,7 +47,7 @@ trait BuildingMethods {
   def buildConditionData(unitSurrogate: String = "", desc: String = "", status: String = "") = {
     val conditionData = new ConditionData
 
-    conditionData.unitSurrogate = unitSurrogate
+    conditionData.surrogateNumber = unitSurrogate
     conditionData.inspCompCondDesc = desc
     conditionData.status = status
 
@@ -60,7 +60,7 @@ trait BuildingMethods {
     commentData.commentType = commentType
     commentData.sequenceNumber = sequenceNumber
     commentData.comment = comment
-    commentData.unitSurrogate = unitSurrogate
+    commentData.surrogateNumber = unitSurrogate
 
     commentData
   }

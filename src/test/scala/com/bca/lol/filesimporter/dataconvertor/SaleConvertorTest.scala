@@ -1,9 +1,9 @@
 package com.bca.lol.filesimporter.dataconvertor
 
-import org.scalatest.FlatSpec
-import org.scalatest.BeforeAndAfter
+import org.scalatest.{FlatSpec, BeforeAndAfter}
 import com.bca.lol.filesimporter.BuildingMethods
 import com.bca.lol.filesimporter.filedata._
+import com.bca.lol.filesimporter.directoryprocessor.ImportResult
 
 class SaleConvertorTest extends FlatSpec with BeforeAndAfter with BuildingMethods {
   val SaleNumber = "TEST74"
@@ -24,9 +24,10 @@ class SaleConvertorTest extends FlatSpec with BeforeAndAfter with BuildingMethod
     // given
     val sale = buildSaleData(SaleNumber, saleDescription = SaleDescription, saleCode = SaleCode, userGroupCode = UserGroupCode,
       saleDate = SaleDate, saleTime = SaleTime, saleVersion = SaleVersion)
+    val res = new ImportResult
 
     // when
-    val convertedSale = saleConvertor.convertSale(sale, List[UnitData](), List[LotData](), List[OptionData](), 
+    val convertedSale = saleConvertor.convertSale(res, sale, List[UnitData](), List[LotData](), List[OptionData](), 
       List[ConditionData](), List[CommentData]())
 
     // then

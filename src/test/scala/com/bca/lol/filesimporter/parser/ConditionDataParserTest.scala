@@ -17,7 +17,7 @@ class ConditionDataParserTest extends FlatSpec with BeforeAndAfter {
     val conditionData = conditionDataParser.parseLine ( "000000003LITERATURE PACK               PRESENT             " )
     
     // then
-    assert ( conditionData.unitSurrogate == "000000003" )
+    assert ( conditionData.surrogateNumber == "000000003" )
     assert ( conditionData.inspCompCondDesc == "LITERATURE PACK" )
     assert ( conditionData.status == "PRESENT" )
   }

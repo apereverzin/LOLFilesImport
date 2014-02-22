@@ -2,10 +2,7 @@ package com.bca.lol.filesimporter.dataconvertor
 
 import com.bca.lol.filesimporter.filedata.OptionData
 import com.bca.lol.filesimporter.data.Option
-import scala.util.Try
-import scala.util.Success
-import scala.util.Failure
-import scala.util.Failure
+import scala.util.{Try, Success, Failure}
 
 class OptionConvertor {
   def convertOption (optionData: OptionData): Try[Option] = {

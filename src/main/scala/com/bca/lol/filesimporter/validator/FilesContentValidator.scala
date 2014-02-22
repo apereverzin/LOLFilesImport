@@ -30,7 +30,7 @@ class FilesContentValidator {
     res = lotsValidator.validateLots(importedData._2(0), importedData._4)
     if (res hasErrors) return res
 
-    val unitSurrogates = Set.empty ++ (importedData._3.map(_.unitSurrogate))
+    val unitSurrogates = Set.empty ++ (importedData._3.map(_.surrogateNumber))
 
     res = optionsValidator.validateOptions(unitSurrogates, importedData._5)
     if (res hasErrors) return res

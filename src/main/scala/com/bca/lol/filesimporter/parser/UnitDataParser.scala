@@ -8,7 +8,7 @@ class UnitDataParser extends FileParser {
     val unitData = new UnitData
 
     takeFirstField(line, 7)
-    unitData.unitSurrogate = takeNextField(line, 9)
+    unitData.surrogateNumber = takeNextField(line, 9)
     unitData.displaySequence = takeNextField(line, 3)
     unitData.registrationNumber = takeNextField(line, 10)
     unitData.fullMake = takeNextField(line, 15)
