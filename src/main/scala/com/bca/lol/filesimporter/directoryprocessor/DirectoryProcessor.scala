@@ -5,6 +5,8 @@ import com.bca.lol.filesimporter.validator.{ FilesValidator, FilesContentValidat
 import com.bca.lol.filesimporter.parser.FilesParser
 import java.io.File
 import com.bca.lol.filesimporter.dataconvertor.SaleConvertor
+import scala.util.{ Success, Failure }
+import com.bca.lol.filesimporter.persistence.PersistenceManager
 
 object DirectoryProcessor {
   val CONTROL = "CONTROL"
@@ -26,6 +28,7 @@ class DirectoryProcessor extends Actor with ActorLogging {
   var filesParser = new FilesParser
   var filesContentValidator = new FilesContentValidator
   var saleConvertor = new SaleConvertor
+  var persistenceManager = new PersistenceManager
 
   def receive = {
     case dir: Directory => sender ! (dir, process(dir))
@@ -36,17 +39,38 @@ class DirectoryProcessor extends Actor with ActorLogging {
     println(s"Directory: $directoryName")
 
     val files = filesExtractor.extractFiles(directoryName)
+    files match {
+      case Success(s) =>
+      case Failure(e: Throwable) => return processError(e)
+    }
 
-    var res = filesValidator.validateFiles(files.filterNot(_.getName.startsWith(".")).map(_.getName))
+    var res = filesValidator.validateFiles(files.get.filterNot(_.getName.startsWith(".")).map(_.getName))
     if (res.hasErrors) return res
 
-    val importedData = filesParser.parseFiles(files)
+    val importedData = filesParser.parseFiles(files.get)
+    importedData match {
+      case Success(s) =>
+      case Failure(e: Throwable) => return processError(e)
+    }
 
-    res = filesContentValidator.validateFilesContent(importedData)
+    res = filesContentValidator.validateFilesContent(importedData.get)
     if (res.hasErrors) return res
-    
-    saleConvertor.convertSale(res, importedData._2(0), importedData._3, importedData._4, importedData._5, importedData._6, importedData._7)
 
+    val sale = saleConvertor.convertSale(res, importedData.get)
+    sale match {
+      case Success(s) =>
+      case Failure(e: Throwable) => return processError(e)
+    }
+
+    persistenceManager.persistSale(sale.get) match {
+      case Success(_) => res
+      case Failure(e: Throwable) => return processError(e)
+    }
+  }
+
+  private def processError(e: Throwable): ImportResult = {
+    val res = new ImportResult();
+    res.addError(e.getMessage());
     res
   }
 }

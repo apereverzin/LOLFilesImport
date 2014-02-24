@@ -5,6 +5,10 @@ import com.bca.lol.filesimporter.data.Lot
 import scala.util.{Try, Success, Failure}
 import com.bca.lol.filesimporter.data.LotElement
 import com.bca.lol.filesimporter.directoryprocessor.ImportResult
+import scala.collection.mutable.ListBuffer
+import com.bca.lol.filesimporter.data.Option
+import com.bca.lol.filesimporter.data.Comment
+import com.bca.lol.filesimporter.data.Condition
 
 class LotConvertor {
   var optionConvertor = new OptionConvertor
@@ -46,17 +50,20 @@ class LotConvertor {
         lot.saleCode = ""
         lot.catalogId = 0
         
-        options.foreach(o => lot.addOption(optionConvertor.convertOption(o).get))
-        conditions.foreach(c => lot.addCondition(conditionConvertor.convertCondition(c).get))
-        comments.foreach(c => lot.addComment(commentConvertor.convertComment(c).get))
+        val convertedOptions = new ListBuffer[Option]
+        val convertedConditions = new ListBuffer[Condition]
+        val convertedComments = new ListBuffer[Comment]
+        options.foreach(o => convertedOptions += (optionConvertor.convertOption(o).get))
+        conditions.foreach(c => convertedConditions += (conditionConvertor.convertCondition(c).get))
+        comments.foreach(c => convertedComments += (commentConvertor.convertComment(c).get))
+        
+        lot.options = convertedOptions.toList
+        lot.conditions = convertedConditions.toList
+        lot.comments = convertedComments.toList
 
         Success(lot)
       }
       case Failure(f) => Failure[Lot](f)
     }
-  }
-
-  def addElement[T <: LotElement](elem: Try[T]) {
-
   }
 }

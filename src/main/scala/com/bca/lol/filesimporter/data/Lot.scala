@@ -30,14 +30,7 @@ case class Lot(displaySequence: Int) extends Sequenced(displaySequence: Int) {
   var saleCode: String = _
   var catalogId: Int = _
 
-  private val options : ListBuffer[Option] = ListBuffer[Option]()
-  private val conditions : ListBuffer[Condition] = ListBuffer[Condition]()
-  private val comments : ListBuffer[Comment] = ListBuffer[Comment]()
-  
-  def addOption(option: Option) = options += option
-  def getOptions = options.toList
-  def addCondition(condition: Condition) = conditions += condition
-  def getConditions = conditions.toList
-  def addComment(comment: Comment) = comments += comment
-  def getComments = comments.toList
+  var options: List[Option] = _
+  var conditions: List[Condition] = _
+  var comments: List[Comment] = _
 }

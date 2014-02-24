@@ -14,6 +14,8 @@ import scala.collection.mutable.Map
 import scala.io.Source
 import com.bca.lol.filesimporter.filedata.ControlData
 import com.bca.lol.filesimporter.filedata.FileData
+import com.bca.lol.filesimporter.filedata.ImportedData
+import scala.util.{ Try, Success, Failure }
 
 class FilesParser {
   var controlDataParser = new ControlDataParser
@@ -24,24 +26,26 @@ class FilesParser {
   var conditionDataParser = new ConditionDataParser
   var commentDataParser = new CommentDataParser
 
-  def parseFiles(files: List[File]): (ControlData, List[SaleData], List[UnitData], List[LotData], List[OptionData], List[ConditionData], 
-      List[CommentData]) = {
+  def parseFiles(files: List[File]): Try[ImportedData] = {
 
-    val fileNames: Map[String, File] = new HashMap[String, File]();
-    files.foreach(f => fileNames.put(f.getName, f))
-        
-    val controlData = parseControlFile(fileNames)
-    val saleData = parseFile(fileNames, DirectoryProcessor.SALE, saleDataParser)
-    val unitData = parseFile(fileNames, DirectoryProcessor.UNIT, unitDataParser)
-    val lotData = parseFile(fileNames, DirectoryProcessor.LOT, lotDataParser)
-    val optionData = parseFile(fileNames, DirectoryProcessor.OPTION, optionDataParser)
-    val conditionData = parseFile(fileNames, DirectoryProcessor.CONDS, conditionDataParser)
-    val commentData = parseFile(fileNames, DirectoryProcessor.UCOMMENT, commentDataParser)
-    
-    (controlData, saleData.asInstanceOf[List[SaleData]], unitData.asInstanceOf[List[UnitData]], lotData.asInstanceOf[List[LotData]], 
-        optionData.asInstanceOf[List[OptionData]], conditionData.asInstanceOf[List[ConditionData]], commentData.asInstanceOf[List[CommentData]])
+    try {
+      val fileNames: Map[String, File] = new HashMap[String, File]();
+      files.foreach(f => fileNames.put(f.getName, f))
+
+      val controlData = parseControlFile(fileNames)
+      val saleData = parseFile(fileNames, DirectoryProcessor.SALE, saleDataParser).asInstanceOf[List[SaleData]]
+      val unitData = parseFile(fileNames, DirectoryProcessor.UNIT, unitDataParser).asInstanceOf[List[UnitData]]
+      val lotData = parseFile(fileNames, DirectoryProcessor.LOT, lotDataParser).asInstanceOf[List[LotData]]
+      val optionData = parseFile(fileNames, DirectoryProcessor.OPTION, optionDataParser).asInstanceOf[List[OptionData]]
+      val conditionData = parseFile(fileNames, DirectoryProcessor.CONDS, conditionDataParser).asInstanceOf[List[ConditionData]]
+      val commentData = parseFile(fileNames, DirectoryProcessor.UCOMMENT, commentDataParser).asInstanceOf[List[CommentData]]
+
+      Success(new ImportedData(controlData, saleData, unitData, lotData, optionData, conditionData, commentData))
+    } catch {
+      case e: Throwable => Failure(e)
+    }
   }
-  
+
   private def parseControlFile(fileNames: Map[String, File]): ControlData = {
     val file = fileNames.get(DirectoryProcessor.CONTROL).get
     val bufferedSource = Source.fromFile(file)
@@ -49,7 +53,7 @@ class FilesParser {
     bufferedSource.close
     controlData
   }
-  
+
   private def parseFile(fileNames: Map[String, File], fileName: String, parser: FileParser) = {
     val file = fileNames.get(fileName).get
     parser.parseLines(file)

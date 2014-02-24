@@ -2,13 +2,7 @@ package com.bca.lol.filesimporter.validator
 
 import java.io.File
 import com.bca.lol.filesimporter.directoryprocessor.ImportResult
-import com.bca.lol.filesimporter.filedata.ControlData
-import com.bca.lol.filesimporter.filedata.SaleData
-import com.bca.lol.filesimporter.filedata.UnitData
-import com.bca.lol.filesimporter.filedata.LotData
-import com.bca.lol.filesimporter.filedata.OptionData
-import com.bca.lol.filesimporter.filedata.ConditionData
-import com.bca.lol.filesimporter.filedata.CommentData
+import com.bca.lol.filesimporter.filedata._
 
 class FilesContentValidator {
   var unitsValidator = new UnitsValidator
@@ -17,28 +11,27 @@ class FilesContentValidator {
   var conditionsValidator = new ConditionsValidator
   var commentsValidator = new CommentsValidator
 
-  def validateFilesContent(importedData: (ControlData, List[SaleData], List[UnitData], List[LotData], List[OptionData], 
-      List[ConditionData], List[CommentData])): ImportResult = {
+  def validateFilesContent(importedData: ImportedData): ImportResult = {
 
-    var res = validateNumberOfEntries(importedData._1, importedData._2, importedData._3, importedData._4,
-      importedData._5, importedData._6, importedData._7)
+    var res = validateNumberOfEntries(importedData.control, importedData.sales, importedData.units, importedData.lots,
+      importedData.options, importedData.conditions, importedData.comments)
     if (res hasErrors) return res
 
-    res = unitsValidator.validateUnits(importedData._3, importedData._4)
+    res = unitsValidator.validateUnits(importedData.units, importedData.lots)
     if (res hasErrors) return res
 
-    res = lotsValidator.validateLots(importedData._2(0), importedData._4)
+    res = lotsValidator.validateLots(importedData.sales(0), importedData.lots)
     if (res hasErrors) return res
 
-    val unitSurrogates = Set.empty ++ (importedData._3.map(_.surrogateNumber))
+    val unitSurrogates = Set.empty ++ (importedData.units.map(_.surrogateNumber))
 
-    res = optionsValidator.validateOptions(unitSurrogates, importedData._5)
+    res = optionsValidator.validateOptions(unitSurrogates, importedData.options)
     if (res hasErrors) return res
 
-    res = conditionsValidator.validateConditions(unitSurrogates, importedData._6)
+    res = conditionsValidator.validateConditions(unitSurrogates, importedData.conditions)
     if (res hasErrors) return res
 
-    commentsValidator.validateComments(unitSurrogates, importedData._7)
+    commentsValidator.validateComments(unitSurrogates, importedData.comments)
   }
 
   private def validateNumberOfEntries(control: ControlData, sales: List[SaleData], units: List[UnitData], lots: List[LotData],

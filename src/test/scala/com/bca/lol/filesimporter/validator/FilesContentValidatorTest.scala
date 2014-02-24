@@ -47,6 +47,8 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
     val conditions = List[ConditionData](condition)
     val comment = buildCommentData()
     val comments = List[CommentData](comment)
+    val control = new ControlData(1, 1, 1, 1, 1, 1)
+    val importedData = new ImportedData(control, List[SaleData](sale), units, lots, options, conditions, comments)
 
     when(lotsValidator.validateLots(sale, lots)).thenReturn(ImportResult())
     when(unitsValidator.validateUnits(units, lots)).thenReturn(ImportResult())
@@ -54,10 +56,8 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
     when(conditionsValidator.validateConditions(unitSurrogates, conditions)).thenReturn(ImportResult())
     when(commentsValidator.validateComments(unitSurrogates, comments)).thenReturn(ImportResult())
 
-    val control = new ControlData(1, 1, 1, 1, 1, 1)
-
     // when
-    val res = filesContentValidator.validateFilesContent(control, List[SaleData](sale), units, lots, options, conditions, comments)
+    val res = filesContentValidator.validateFilesContent(importedData)
 
     // then
     assert(res hasNoErrors)
@@ -66,14 +66,14 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
   "FilesContentValidator" should "fail to validate wrong number of sales" in {
     // given
     val filesContentValidator = new FilesContentValidator
-
     val control = new ControlData(1, 1, 1, 1, 1, 1)
-
-    // when
-    val res = filesContentValidator.validateFilesContent((control, List[SaleData](SaleData(), SaleData()),
+    val importedData = new ImportedData(control, List[SaleData](SaleData(), SaleData()),
       List[UnitData](UnitData()),
       List[LotData](LotData()), List[OptionData](OptionData()), List[ConditionData](ConditionData()),
-      List[CommentData](CommentData())))
+      List[CommentData](CommentData()))
+
+    // when
+    val res = filesContentValidator.validateFilesContent(importedData)
 
     // then
     assert(res hasErrors)
@@ -84,13 +84,13 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
   "FilesContentValidator" should "fail to validate wrong number of units" in {
     // given
     val filesContentValidator = new FilesContentValidator
-
     val control = new ControlData(1, 2, 1, 1, 1, 1)
-
-    // when
-    val res = filesContentValidator.validateFilesContent(control, List[SaleData](SaleData()), List[UnitData](UnitData()),
+    val importedData = new ImportedData(control, List[SaleData](SaleData()), List[UnitData](UnitData()),
       List[LotData](LotData()), List[OptionData](OptionData()), List[ConditionData](ConditionData()),
       List[CommentData](CommentData()))
+
+    // when
+    val res = filesContentValidator.validateFilesContent(importedData)
 
     // then
     assert(res hasErrors)
@@ -101,13 +101,13 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
   "FilesContentValidator" should "fail to validate wrong number of lots" in {
     // given
     val filesContentValidator = new FilesContentValidator
-
     val control = new ControlData(1, 1, 2, 1, 1, 1)
-
-    // when
-    val res = filesContentValidator.validateFilesContent(control, List[SaleData](SaleData()), List[UnitData](UnitData()),
+    val importedData = new ImportedData(control, List[SaleData](SaleData()), List[UnitData](UnitData()),
       List[LotData](LotData()), List[OptionData](OptionData()), List[ConditionData](ConditionData()),
       List[CommentData](CommentData()))
+
+    // when
+    val res = filesContentValidator.validateFilesContent(importedData)
 
     // then
     assert(res hasErrors)
@@ -118,13 +118,13 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
   "FilesContentValidator" should "fail to validate wrong number of options" in {
     // given
     val filesContentValidator = new FilesContentValidator
-
     val control = new ControlData(1, 1, 1, 2, 1, 1)
-
-    // when
-    val res = filesContentValidator.validateFilesContent(control, List[SaleData](SaleData()), List[UnitData](UnitData()),
+    val importedData = new ImportedData(control, List[SaleData](SaleData()), List[UnitData](UnitData()),
       List[LotData](LotData()), List[OptionData](OptionData()), List[ConditionData](ConditionData()),
       List[CommentData](new CommentData))
+
+    // when
+    val res = filesContentValidator.validateFilesContent(importedData)
 
     // then
     assert(res hasErrors)
@@ -135,13 +135,13 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
   "FilesContentValidator" should "fail to validate wrong number of conditions" in {
     // given
     val filesContentValidator = new FilesContentValidator
-
     val control = new ControlData(1, 1, 1, 1, 2, 1)
-
-    // when
-    val res = filesContentValidator.validateFilesContent(control, List[SaleData](SaleData()), List[UnitData](UnitData()),
+    val importedData = new ImportedData(control, List[SaleData](SaleData()), List[UnitData](UnitData()),
       List[LotData](LotData()), List[OptionData](OptionData()), List[ConditionData](ConditionData()),
       List[CommentData](CommentData()))
+
+    // when
+    val res = filesContentValidator.validateFilesContent(importedData)
 
     // then
     assert(res hasErrors)
@@ -152,13 +152,13 @@ class FilesContentValidatorTest extends FlatSpec with AssertionsForJUnit with Mo
   "FilesContentValidator" should "fail to validate wrong number of comments" in {
     // given
     val filesContentValidator = new FilesContentValidator
-
     val control = new ControlData(1, 1, 1, 1, 1, 2)
-
-    // when
-    val res = filesContentValidator.validateFilesContent(control, List[SaleData](SaleData()), List[UnitData](UnitData()),
+    val importedData = new ImportedData(control, List[SaleData](SaleData()), List[UnitData](UnitData()),
       List[LotData](LotData()), List[OptionData](OptionData()), List[ConditionData](ConditionData()),
       List[CommentData]())
+
+    // when
+    val res = filesContentValidator.validateFilesContent(importedData)
 
     // then
     assert(res hasErrors)

@@ -25,10 +25,11 @@ class SaleConvertorTest extends FlatSpec with BeforeAndAfter with BuildingMethod
     val sale = buildSaleData(SaleNumber, saleDescription = SaleDescription, saleCode = SaleCode, userGroupCode = UserGroupCode,
       saleDate = SaleDate, saleTime = SaleTime, saleVersion = SaleVersion)
     val res = new ImportResult
+    val importedData = new ImportedData(new ControlData(), List[SaleData](sale), List[UnitData](), List[LotData](), List[OptionData](), 
+      List[ConditionData](), List[CommentData]())
 
     // when
-    val convertedSale = saleConvertor.convertSale(res, sale, List[UnitData](), List[LotData](), List[OptionData](), 
-      List[ConditionData](), List[CommentData]())
+    val convertedSale = saleConvertor.convertSale(res, importedData).get
 
     // then
     assert(convertedSale.name == SaleNumber)

@@ -9,17 +9,17 @@ class CommentDataParserTest extends FlatSpec with BeforeAndAfter {
   before {
     commentDataParser = new CommentDataParser
   }
-  
+
   "CommentDataParser" should "parse correct data" in {
     // given
-    
+
     // when
-    val commentData = commentDataParser.parseLine ( "0000002X001Grade 4                                                          000000002" )
-    
+    val commentData = commentDataParser.parseLine("0000002X001Grade 4                                                          000000002")
+
     // then
-    assert ( commentData.surrogateNumber == "000000002" )
-    assert ( commentData.commentType == "X" )
-    assert ( commentData.sequenceNumber == "001" )
-    assert ( commentData.comment == "Grade 4" )
+    assert(commentData.surrogateNumber == "000000002")
+    assert(commentData.commentType == "X")
+    assert(commentData.sequenceNumber == "001")
+    assert(commentData.comment == "Grade 4")
   }
 }
