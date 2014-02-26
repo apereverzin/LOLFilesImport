@@ -78,7 +78,7 @@ public class FileWatchingService {
 
 	private void processPath(int languageId, Path path) {
 		if (Files.isDirectory(path)) {
-			fileImporter.processDirectory(languageId, path.toString());
+			fileImporter.processDirectory(languageId, path);
 		}
 	}
 }

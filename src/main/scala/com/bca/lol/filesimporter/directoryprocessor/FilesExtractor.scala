@@ -5,9 +5,9 @@ import scala.util.{Try, Success, Failure}
 import scala.collection.immutable.List
 
 class FilesExtractor {
-  def extractFiles(directoryName: String): Try[List[File]] = {
+  def extractFiles(directory: File): Try[List[File]] = {
     try {
-      Success((new File(directoryName)).listFiles.filter(!_.isDirectory).toList)
+      Success(directory.listFiles.filter(!_.isDirectory).toList)
     } catch {
       case e: Throwable => Failure(e)
     }

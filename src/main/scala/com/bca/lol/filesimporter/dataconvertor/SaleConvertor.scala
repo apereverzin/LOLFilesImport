@@ -9,7 +9,7 @@ import scala.util.{ Try, Success, Failure }
 class SaleConvertor {
   var lotsConvertor = new LotsConvertor
 
-  def convertSale(res: ImportResult, importedData: ImportedData): Try[Sale] = {
+  def convertSale(importedData: ImportedData): Try[Sale] = {
     try {
       val convertedSale = new Sale
 
@@ -31,7 +31,7 @@ class SaleConvertor {
       convertedSale.defaultLanguage = ""
       convertedSale.documentLanguage = ""
 
-      convertedSale.lots = lotsConvertor.convertLots(res, importedData.units, importedData.lots, importedData.options, importedData.conditions, importedData.comments)
+      convertedSale.lots = lotsConvertor.convertLots(importedData.units, importedData.lots, importedData.options, importedData.conditions, importedData.comments)
 
       Success(convertedSale)
     } catch {

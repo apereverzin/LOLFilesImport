@@ -9,7 +9,7 @@ import com.bca.lol.filesimporter.filedata.ConditionData
 import com.bca.lol.filesimporter.filedata.CommentData
 import java.io.File
 import scala.collection.mutable.HashMap
-import com.bca.lol.filesimporter.directoryprocessor.DirectoryProcessor
+import com.bca.lol.filesimporter.directoryprocessor.DirectoryProcessor._
 import scala.collection.mutable.Map
 import scala.io.Source
 import com.bca.lol.filesimporter.filedata.ControlData
@@ -33,12 +33,12 @@ class FilesParser {
       files.foreach(f => fileNames.put(f.getName, f))
 
       val controlData = parseControlFile(fileNames)
-      val saleData = parseFile(fileNames, DirectoryProcessor.SALE, saleDataParser).asInstanceOf[List[SaleData]]
-      val unitData = parseFile(fileNames, DirectoryProcessor.UNIT, unitDataParser).asInstanceOf[List[UnitData]]
-      val lotData = parseFile(fileNames, DirectoryProcessor.LOT, lotDataParser).asInstanceOf[List[LotData]]
-      val optionData = parseFile(fileNames, DirectoryProcessor.OPTION, optionDataParser).asInstanceOf[List[OptionData]]
-      val conditionData = parseFile(fileNames, DirectoryProcessor.CONDS, conditionDataParser).asInstanceOf[List[ConditionData]]
-      val commentData = parseFile(fileNames, DirectoryProcessor.UCOMMENT, commentDataParser).asInstanceOf[List[CommentData]]
+      val saleData = parseFile(fileNames, SALE, saleDataParser).asInstanceOf[List[SaleData]]
+      val unitData = parseFile(fileNames, UNIT, unitDataParser).asInstanceOf[List[UnitData]]
+      val lotData = parseFile(fileNames, LOT, lotDataParser).asInstanceOf[List[LotData]]
+      val optionData = parseFile(fileNames, OPTION, optionDataParser).asInstanceOf[List[OptionData]]
+      val conditionData = parseFile(fileNames, CONDS, conditionDataParser).asInstanceOf[List[ConditionData]]
+      val commentData = parseFile(fileNames, UCOMMENT, commentDataParser).asInstanceOf[List[CommentData]]
 
       Success(new ImportedData(controlData, saleData, unitData, lotData, optionData, conditionData, commentData))
     } catch {
@@ -47,7 +47,7 @@ class FilesParser {
   }
 
   private def parseControlFile(fileNames: Map[String, File]): ControlData = {
-    val file = fileNames.get(DirectoryProcessor.CONTROL).get
+    val file = fileNames.get(CONTROL).get
     val bufferedSource = Source.fromFile(file)
     val controlData = controlDataParser.parseControlFileLines(bufferedSource.getLines)
     bufferedSource.close

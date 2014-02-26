@@ -15,7 +15,7 @@ class LotConvertor {
   var conditionConvertor = new ConditionConvertor
   var commentConvertor = new CommentConvertor
   
-  def convertLot(res: ImportResult, unit: UnitData, lot: LotData, options: List[OptionData] = List[OptionData](),
+  def convertLot(unit: UnitData, lot: LotData, options: List[OptionData] = List[OptionData](),
     conditions: List[ConditionData] = List[ConditionData](), comments: List[CommentData] = List[CommentData]()): Try[Lot] = {
     val displaySequence = Try[Int](Integer.parseInt(unit.displaySequence))
 

@@ -6,7 +6,6 @@ import com.bca.lol.filesimporter.filedata._
 import org.scalatest.mock._
 import org.mockito.Mockito._
 import com.bca.lol.filesimporter.data.Option
-import com.bca.lol.filesimporter.directoryprocessor.ImportResult
 
 class LotConvertorTest extends FlatSpec with MockitoSugar with BeforeAndAfter with BuildingMethods {
   val UnitSurrogate1 = "00000001"
@@ -47,10 +46,9 @@ class LotConvertorTest extends FlatSpec with MockitoSugar with BeforeAndAfter wi
     val options = List[OptionData]()
     val conditions = List[ConditionData]()
     val comments = List[CommentData]()
-    val res = new ImportResult
 
     // when
-    val convertedLot = lotConvertor.convertLot(res, unit, lot, options, conditions, comments)
+    val convertedLot = lotConvertor.convertLot(unit, lot, options, conditions, comments)
 
     // then
     assert(convertedLot.isSuccess)
@@ -88,10 +86,9 @@ class LotConvertorTest extends FlatSpec with MockitoSugar with BeforeAndAfter wi
     val options = List[OptionData]()
     val conditions = List[ConditionData]()
     val comments = List[CommentData]()
-    val res = new ImportResult
 
     // when
-    val convertedLot = lotConvertor.convertLot(res, unit, lot, options, conditions, comments)
+    val convertedLot = lotConvertor.convertLot(unit, lot, options, conditions, comments)
 
     // then
     assert(convertedLot.isFailure)

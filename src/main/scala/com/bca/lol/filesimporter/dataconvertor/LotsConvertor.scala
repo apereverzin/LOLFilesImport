@@ -9,7 +9,7 @@ import com.bca.lol.filesimporter.directoryprocessor.ImportResult
 class LotsConvertor {
   private val lotConvertor = new LotConvertor
   
-  def convertLots(res: ImportResult, units: List[UnitData], lots: List[LotData], options: List[OptionData], 
+  def convertLots(units: List[UnitData], lots: List[LotData], options: List[OptionData], 
       conditions: List[ConditionData], comments: List[CommentData]) = {
     val surrogateNumbersAndUnits = buildSurrogateNumbersAndUnits(units)
     val surrogateNumbersAndOptions = buildSurrogateNumbersAndOptions(options)
@@ -19,7 +19,7 @@ class LotsConvertor {
     val convertedLots = new ListBuffer[Lot]
     
     for(lot <- lots) {
-      lotConvertor.convertLot(res, surrogateNumbersAndUnits.get(lot.surrogateNumber).get, 
+      lotConvertor.convertLot(surrogateNumbersAndUnits.get(lot.surrogateNumber).get, 
           lot, 
           surrogateNumbersAndOptions.get(lot.surrogateNumber).getOrElse(new ListBuffer[OptionData]).toList, 
           surrogateNumbersAndConditions.get(lot.surrogateNumber).getOrElse(new ListBuffer[ConditionData]).toList, 
