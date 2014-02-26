@@ -81,7 +81,7 @@ class DirectoryProcessor {
 
   private def persistSale(saleDirectory: SaleDirectory, sale: Sale): ImportResult = {
     persistenceManager.persistSale(sale) match {
-      case Success(_) => moveDirToDest(saleDirectory, PROCESSED_DIRECTORY)
+      case Success(_) => moveDirToDest(saleDirectory, PROCESSED_DIRECTORY, new ImportResult)
       case Failure(e: Throwable) => processError(saleDirectory, e)
     }
   }
@@ -89,10 +89,10 @@ class DirectoryProcessor {
   private def processError(saleDirectory: SaleDirectory, e: Throwable): ImportResult = {
     val res = new ImportResult()
     res.addError(e.getMessage())
-    moveDirToDest(saleDirectory, FAILED_DIRECTORY)
+    moveDirToDest(saleDirectory, FAILED_DIRECTORY, res)
   }
 
-  private def moveDirToDest(saleDirectory: SaleDirectory, dest: String): ImportResult = {
+  private def moveDirToDest(saleDirectory: SaleDirectory, dest: String, res: ImportResult): ImportResult = {
     try {
       val destPath = saleDirectory.directory.getParent.getParent.resolve(dest)
       
@@ -102,9 +102,9 @@ class DirectoryProcessor {
       
       //val v = Files.move(saleDirectory.directory, destPath.resolve(saleDirectory.directory.getFileName()))
       
-      new ImportResult
+      res
     } catch {
-      case (e: Throwable) => { e.printStackTrace; val res = new ImportResult(); res.addError(e.getMessage()); res }
+      case (e: Throwable) => { e.printStackTrace; res.addError(e.getMessage()); res }
     }
   }
 }
