@@ -24,6 +24,9 @@ object DirectoryProcessor {
 
   val MANDATORY_SALE_FILES = List(CONTROL, SALE, UNIT, LOT, OPTION, CONDS, UCOMMENT);
   val OPTIONAL_SALE_FILES = List(PRICES);
+
+  val PROCESSED_DIRECTORY = "processed"
+  val FAILED_DIRECTORY = "failed"
 }
 
 class DirectoryProcessor {
@@ -33,11 +36,11 @@ class DirectoryProcessor {
   var filesContentValidator = new FilesContentValidator
   var saleConvertor = new SaleConvertor
   var persistenceManager = new PersistenceManager
-
-  val PROCESSED_DIRECTORY = "processed"
-  val FAILED_DIRECTORY = "failed"
+  var directoryMover = new DirectoryMover
 
   def process(saleDirectory: SaleDirectory): ImportResult = {
+    println(s"process ${saleDirectory.directory.getFileName}")
+    
     val directory = saleDirectory.directory.toFile()
     println(s"Directory: $directory")
 
@@ -45,6 +48,7 @@ class DirectoryProcessor {
   }
 
   private def processFiles(saleDirectory: SaleDirectory, files: Try[List[File]]): ImportResult = {
+    println(s"processFiles ${saleDirectory.directory.getFileName}")
     files match {
       case Success(_) => validateFiles(saleDirectory, files.get)
       case Failure(e: Throwable) => processError(saleDirectory, e)
@@ -52,12 +56,14 @@ class DirectoryProcessor {
   }
 
   private def validateFiles(saleDirectory: SaleDirectory, files: List[File]): ImportResult = {
+    println(s"validateFiles ${saleDirectory.directory.getFileName}")
     var res = filesValidator.validateFiles(files.filterNot(_.getName.startsWith(".")).map(_.getName))
-    if (res.hasErrors) return res
+    if (res.hasErrors) return moveDirToDest(saleDirectory, DirectoryProcessor.FAILED_DIRECTORY, res)
     parseFiles(saleDirectory, files)
   }
 
   private def parseFiles(saleDirectory: SaleDirectory, files: List[File]): ImportResult = {
+    println(s"parseFiles ${saleDirectory.directory.getFileName}")
     val importedData = filesParser.parseFiles(files)
     importedData match {
       case Success(_) => validateFilesContent(saleDirectory, importedData.get)
@@ -66,12 +72,14 @@ class DirectoryProcessor {
   }
 
   private def validateFilesContent(saleDirectory: SaleDirectory, importedData: ImportedData): ImportResult = {
+    println(s"validateFilesContent ${saleDirectory.directory.getFileName}")
     val res = filesContentValidator.validateFilesContent(importedData)
-    if (res.hasErrors) return res
+    if (res.hasErrors) return moveDirToDest(saleDirectory, DirectoryProcessor.FAILED_DIRECTORY, res)
     convertSale(saleDirectory, importedData)
   }
 
   private def convertSale(saleDirectory: SaleDirectory, importedData: ImportedData): ImportResult = {
+    println(s"convertSale ${saleDirectory.directory.getFileName}")
     val sale = saleConvertor.convertSale(importedData)
     sale match {
       case Success(_) => persistSale(saleDirectory, sale.get)
@@ -80,8 +88,9 @@ class DirectoryProcessor {
   }
 
   private def persistSale(saleDirectory: SaleDirectory, sale: Sale): ImportResult = {
+    println(s"persistSale ${saleDirectory.directory.getFileName}")
     persistenceManager.persistSale(sale) match {
-      case Success(_) => moveDirToDest(saleDirectory, PROCESSED_DIRECTORY, new ImportResult)
+      case Success(_) => moveDirToDest(saleDirectory, DirectoryProcessor.PROCESSED_DIRECTORY, new ImportResult)
       case Failure(e: Throwable) => processError(saleDirectory, e)
     }
   }
@@ -89,22 +98,13 @@ class DirectoryProcessor {
   private def processError(saleDirectory: SaleDirectory, e: Throwable): ImportResult = {
     val res = new ImportResult()
     res.addError(e.getMessage())
-    moveDirToDest(saleDirectory, FAILED_DIRECTORY, res)
+    moveDirToDest(saleDirectory, DirectoryProcessor.FAILED_DIRECTORY, res)
   }
 
   private def moveDirToDest(saleDirectory: SaleDirectory, dest: String, res: ImportResult): ImportResult = {
-    try {
-      val destPath = saleDirectory.directory.getParent.getParent.resolve(dest)
-      
-      //if (!destPath.toFile.exists) {
-      //  destPath.toFile.mkdir
-      //}
-      
-      //val v = Files.move(saleDirectory.directory, destPath.resolve(saleDirectory.directory.getFileName()))
-      
-      res
-    } catch {
-      case (e: Throwable) => { e.printStackTrace; res.addError(e.getMessage()); res }
+    directoryMover.moveDirectory(saleDirectory, dest, res) match {
+      case Success(_) => res
+      case Failure(e: Throwable) => { res.addError(e.getMessage()); res }
     }
   }
 }

@@ -47,6 +47,7 @@ class FilesParser {
   }
 
   private def parseControlFile(fileNames: Map[String, File]): ControlData = {
+    println(s"parseControlFile")
     val file = fileNames.get(CONTROL).get
     val bufferedSource = Source.fromFile(file)
     val controlData = controlDataParser.parseControlFileLines(bufferedSource.getLines)
@@ -55,6 +56,7 @@ class FilesParser {
   }
 
   private def parseFile(fileNames: Map[String, File], fileName: String, parser: FileParser) = {
+    println(s"parseFile ${fileName}")
     val file = fileNames.get(fileName).get
     parser.parseLines(file)
   }

@@ -5,6 +5,7 @@ import org.scalatest.mock._
 import com.bca.lol.filesimporter.validator.FilesValidator
 import org.scalatest.junit.AssertionsForJUnit
 import org.mockito.Mockito._
+import org.mockito.Matchers._
 import java.io.File
 import com.bca.lol.filesimporter.parser.FilesParser
 import com.bca.lol.filesimporter.filedata._
@@ -23,6 +24,7 @@ import java.nio.file.Files
 class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with MockitoSugar with BeforeAndAfter {
   val DIR = new File("123").toPath().toAbsolutePath()
   val LANG = 1
+  val SALE_DIRECTORY = SaleDirectory(LANG, DIR)
 
   var directoryProcessor: DirectoryProcessor = _
   var mockFilesExtractor: FilesExtractor = _
@@ -31,6 +33,7 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
   var mockFilesContentValidator: FilesContentValidator = _
   var mockSaleConvertor: SaleConvertor = _
   var mockPersistenceManager: PersistenceManager = _
+  var mockDirectoryMover: DirectoryMover = _
 
   before {
     directoryProcessor = new DirectoryProcessor
@@ -52,6 +55,9 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     
     mockPersistenceManager = mock[PersistenceManager]
     directoryProcessor.persistenceManager = mockPersistenceManager
+    
+    mockDirectoryMover = mock[DirectoryMover]
+    directoryProcessor.directoryMover = mockDirectoryMover
   }
 
   "DirectoryProcessor" should "process successfully validation results" in {
@@ -66,9 +72,10 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     when(mockFilesContentValidator.validateFilesContent(importedData)).thenReturn(new ImportResult)
     when(mockSaleConvertor.convertSale(importedData)).thenReturn(Success(sale))
     when(mockPersistenceManager.persistSale(sale)).thenReturn(Success())
-    
+    when(mockDirectoryMover.moveDirectory(SALE_DIRECTORY, DirectoryProcessor.PROCESSED_DIRECTORY, new ImportResult)).thenReturn(Success())
+
     // when
-    val res = directoryProcessor.process(SaleDirectory(LANG, DIR))
+    val res = directoryProcessor.process(SALE_DIRECTORY)
 
     // then
     assert(res.hasNoErrors)
@@ -79,16 +86,19 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     val mockFiles = buildMockFiles
     val importedData = buildImportedData
     val sale = buildSale
+    val msg = "FilesExtractor error"
+    val errorRes = buildErrorResult(msg);
 
-    when(mockFilesExtractor.extractFiles(DIR.toFile())).thenReturn(Failure(buildException("FilesExtractor error")))
+    when(mockFilesExtractor.extractFiles(DIR.toFile())).thenReturn(Failure(buildException(msg)))
     when(mockFilesValidator.validateFiles(mockFiles.map(_.getName))).thenReturn(new ImportResult)
     when(mockFilesParser.parseFiles(mockFiles)).thenReturn(Success(importedData))
     when(mockFilesContentValidator.validateFilesContent(importedData)).thenReturn(new ImportResult)
     when(mockSaleConvertor.convertSale(importedData)).thenReturn(Success(sale))
     when(mockPersistenceManager.persistSale(sale)).thenReturn(Success())
+    when(mockDirectoryMover.moveDirectory(SALE_DIRECTORY, DirectoryProcessor.FAILED_DIRECTORY, errorRes)).thenReturn(Success())
     
     // when
-    val res = directoryProcessor.process(SaleDirectory(LANG, DIR))
+    val res = directoryProcessor.process(SALE_DIRECTORY)
 
     // then
     assert(res.hasErrors)
@@ -101,16 +111,19 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     val mockFiles = buildMockFiles
     val importedData = buildImportedData
     val sale = buildSale
+    val msg = "FilesValidator error"
+    val errorRes = buildErrorResult(msg)
 
     when(mockFilesExtractor.extractFiles(DIR.toFile())).thenReturn(Success(mockFiles))
-    when(mockFilesValidator.validateFiles(mockFiles.map(_.getName))).thenReturn(buildImportResult("FilesValidator error"))
+    when(mockFilesValidator.validateFiles(mockFiles.map(_.getName))).thenReturn(errorRes)
     when(mockFilesParser.parseFiles(mockFiles)).thenReturn(Success(importedData))
     when(mockFilesContentValidator.validateFilesContent(importedData)).thenReturn(new ImportResult)
     when(mockSaleConvertor.convertSale(importedData)).thenReturn(Success(sale))
     when(mockPersistenceManager.persistSale(sale)).thenReturn(Success())
+    when(mockDirectoryMover.moveDirectory(SALE_DIRECTORY, DirectoryProcessor.FAILED_DIRECTORY, errorRes)).thenReturn(Success())
     
     // when
-    val res = directoryProcessor.process(SaleDirectory(LANG, DIR))
+    val res = directoryProcessor.process(SALE_DIRECTORY)
 
     // then
     assert(res.hasErrors)
@@ -123,16 +136,19 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     val mockFiles = buildMockFiles
     val importedData = buildImportedData
     val sale = buildSale
+    val msg = "FilesParser error"
+    val errorRes = buildErrorResult(msg);
 
     when(mockFilesExtractor.extractFiles(DIR.toFile())).thenReturn(Success(mockFiles))
     when(mockFilesValidator.validateFiles(mockFiles.map(_.getName))).thenReturn(new ImportResult)
-    when(mockFilesParser.parseFiles(mockFiles)).thenReturn(Failure(buildException("FilesParser error")))
+    when(mockFilesParser.parseFiles(mockFiles)).thenReturn(Failure(buildException(msg)))
     when(mockFilesContentValidator.validateFilesContent(importedData)).thenReturn(new ImportResult)
     when(mockSaleConvertor.convertSale(importedData)).thenReturn(Success(sale))
     when(mockPersistenceManager.persistSale(sale)).thenReturn(Success())
+    when(mockDirectoryMover.moveDirectory(SALE_DIRECTORY, DirectoryProcessor.FAILED_DIRECTORY, errorRes)).thenReturn(Success())
     
     // when
-    val res = directoryProcessor.process(SaleDirectory(LANG, DIR))
+    val res = directoryProcessor.process(SALE_DIRECTORY)
 
     // then
     assert(res.hasErrors)
@@ -145,16 +161,19 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     val mockFiles = buildMockFiles
     val importedData = buildImportedData
     val sale = buildSale
+    val msg = "FilesContentValidator error"
+    val errorRes = buildErrorResult(msg);
 
     when(mockFilesExtractor.extractFiles(DIR.toFile())).thenReturn(Success(mockFiles))
     when(mockFilesValidator.validateFiles(mockFiles.map(_.getName))).thenReturn(new ImportResult)
     when(mockFilesParser.parseFiles(mockFiles)).thenReturn(Success(importedData))
-    when(mockFilesContentValidator.validateFilesContent(importedData)).thenReturn(buildImportResult("FilesContentValidator error"))
+    when(mockFilesContentValidator.validateFilesContent(importedData)).thenReturn(errorRes)
     when(mockSaleConvertor.convertSale(importedData)).thenReturn(Success(sale))
     when(mockPersistenceManager.persistSale(sale)).thenReturn(Success())
+    when(mockDirectoryMover.moveDirectory(SALE_DIRECTORY, DirectoryProcessor.FAILED_DIRECTORY, errorRes)).thenReturn(Success())
     
     // when
-    val res = directoryProcessor.process(SaleDirectory(LANG, DIR))
+    val res = directoryProcessor.process(SALE_DIRECTORY)
 
     // then
     assert(res.hasErrors)
@@ -167,6 +186,8 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     val mockFiles = buildMockFiles
     val importedData = buildImportedData
     val sale = buildSale
+    val msg = "SaleConvertor error"
+    val errorRes = buildErrorResult(msg);
 
     when(mockFilesExtractor.extractFiles(DIR.toFile())).thenReturn(Success(mockFiles))
     when(mockFilesValidator.validateFiles(mockFiles.map(_.getName))).thenReturn(new ImportResult)
@@ -174,9 +195,10 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     when(mockFilesContentValidator.validateFilesContent(importedData)).thenReturn(new ImportResult)
     when(mockSaleConvertor.convertSale(importedData)).thenReturn(Failure(buildException("SaleConvertor error")))
     when(mockPersistenceManager.persistSale(sale)).thenReturn(Success())
+    when(mockDirectoryMover.moveDirectory(SALE_DIRECTORY, DirectoryProcessor.FAILED_DIRECTORY, errorRes)).thenReturn(Success())
     
     // when
-    val res = directoryProcessor.process(SaleDirectory(LANG, DIR))
+    val res = directoryProcessor.process(SALE_DIRECTORY)
 
     // then
     assert(res.hasErrors)
@@ -189,6 +211,8 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     val mockFiles = buildMockFiles
     val importedData = buildImportedData
     val sale = buildSale
+    val msg = "PersistenceManager error"
+    val errorRes = buildErrorResult(msg);
 
     when(mockFilesExtractor.extractFiles(DIR.toFile())).thenReturn(Success(mockFiles))
     when(mockFilesValidator.validateFiles(mockFiles.map(_.getName))).thenReturn(new ImportResult)
@@ -196,9 +220,10 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     when(mockFilesContentValidator.validateFilesContent(importedData)).thenReturn(new ImportResult)
     when(mockSaleConvertor.convertSale(importedData)).thenReturn(Success(sale))
     when(mockPersistenceManager.persistSale(sale)).thenReturn(Failure(buildException("PersistenceManager error")))
+    when(mockDirectoryMover.moveDirectory(SALE_DIRECTORY, DirectoryProcessor.FAILED_DIRECTORY, errorRes)).thenReturn(Success())
     
     // when
-    val res = directoryProcessor.process(SaleDirectory(LANG, DIR))
+    val res = directoryProcessor.process(SALE_DIRECTORY)
 
     // then
     assert(res.hasErrors)
@@ -242,7 +267,7 @@ class DirectoryProcessorTest extends FlatSpec with AssertionsForJUnit with Mocki
     new Exception(errorMsg)
   }
   
-  private def buildImportResult(errorMsg: String) = {
+  private def buildErrorResult(errorMsg: String) = {
     val importResult = new ImportResult
     importResult.addError(errorMsg)
     importResult
