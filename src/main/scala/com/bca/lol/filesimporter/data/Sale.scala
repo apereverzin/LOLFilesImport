@@ -3,8 +3,8 @@ package com.bca.lol.filesimporter.data
 import scala.collection.mutable.ListBuffer
 
 case class Sale() {
-  var context: Int = _
   var id: Int = _
+  var contextId: Int = _
   var name: String = _
   var description: String = _
   var auctionEnd: Long = _

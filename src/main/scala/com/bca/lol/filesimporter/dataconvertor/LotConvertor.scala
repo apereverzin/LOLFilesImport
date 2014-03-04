@@ -23,8 +23,8 @@ class LotConvertor {
       case Success(s) => {
         val lot = new Lot(displaySequence.get)
 
+        lot.id = 0
         lot.contextId = 0
-        lot.lotId = 0
         lot.vendor = 0
         lot.title = ""
         lot.link = ""
@@ -41,14 +41,12 @@ class LotConvertor {
         lot.flags = 0
         lot.status = 0
         lot.quantity = 0
-        lot.auctionEnd = 0L
-        lot.auctionStart = 0
         lot.locked = 0
         lot.created = 0L
         lot.lotType = 0
         lot.displayId = ""
         lot.saleCode = ""
-        lot.catalogId = 0
+        lot.saleId = 0
         
         val convertedOptions = new ListBuffer[Option]
         val convertedConditions = new ListBuffer[Condition]

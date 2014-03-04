@@ -52,8 +52,8 @@ class LotConvertorTest extends FlatSpec with MockitoSugar with BeforeAndAfter wi
 
     // then
     assert(convertedLot.isSuccess)
+    assert(convertedLot.get.id == 0)
     assert(convertedLot.get.contextId == 0)
-    assert(convertedLot.get.lotId == 0)
     assert(convertedLot.get.vendor == 0)
     assert(convertedLot.get.title == "")
     assert(convertedLot.get.link == "")
@@ -70,14 +70,12 @@ class LotConvertorTest extends FlatSpec with MockitoSugar with BeforeAndAfter wi
     assert(convertedLot.get.flags == 0)
     assert(convertedLot.get.status == 0)
     assert(convertedLot.get.quantity == 0)
-    assert(convertedLot.get.auctionEnd == 0L)
-    assert(convertedLot.get.auctionStart == 0)
     assert(convertedLot.get.locked == 0)
     assert(convertedLot.get.created == 0L)
     assert(convertedLot.get.lotType == 0)
     assert(convertedLot.get.displayId == "")
     assert(convertedLot.get.saleCode == "")
-    assert(convertedLot.get.catalogId == 0)
+    assert(convertedLot.get.saleId == 0)
   }
 
   "LotConvertor" should "fail to convert lot with incorrect display sequence" in {

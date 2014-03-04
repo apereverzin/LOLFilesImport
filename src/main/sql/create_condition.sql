@@ -1,0 +1,5 @@
+CREATE TABLE LOT_CONDITION (
+  id INT PRIMARY KEY,
+  inspCompCondDesc VARCHAR(20),
+  status VARCHAR(1),
+  lotId INT);
