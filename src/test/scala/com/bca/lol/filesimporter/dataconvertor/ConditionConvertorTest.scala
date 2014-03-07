@@ -27,7 +27,7 @@ class ConditionConvertorTest extends FlatSpec with BeforeAndAfter with BuildingM
 
     // then
     assert(convertedCondition.isSuccess)
-    assert(convertedCondition.get.inspCompCondDesc == ConditionDescription1)
+    assert(convertedCondition.get.description == ConditionDescription1)
     assert(convertedCondition.get.status == Status1)
   }
 }

@@ -6,3 +6,6 @@ import/
 .project
 .classpath
 
+/processed
+/failed
+/SUNK78

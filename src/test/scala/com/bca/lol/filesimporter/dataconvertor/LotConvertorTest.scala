@@ -5,7 +5,7 @@ import com.bca.lol.filesimporter.BuildingMethods
 import com.bca.lol.filesimporter.filedata._
 import org.scalatest.mock._
 import org.mockito.Mockito._
-import com.bca.lol.filesimporter.data.Option
+import com.bca.lol.filesimporter.data.LotOption
 
 class LotConvertorTest extends FlatSpec with MockitoSugar with BeforeAndAfter with BuildingMethods {
   val UnitSurrogate1 = "00000001"
@@ -53,7 +53,6 @@ class LotConvertorTest extends FlatSpec with MockitoSugar with BeforeAndAfter wi
     // then
     assert(convertedLot.isSuccess)
     assert(convertedLot.get.id == 0)
-    assert(convertedLot.get.contextId == 0)
     assert(convertedLot.get.vendor == 0)
     assert(convertedLot.get.title == "")
     assert(convertedLot.get.link == "")
@@ -71,7 +70,6 @@ class LotConvertorTest extends FlatSpec with MockitoSugar with BeforeAndAfter wi
     assert(convertedLot.get.status == 0)
     assert(convertedLot.get.quantity == 0)
     assert(convertedLot.get.locked == 0)
-    assert(convertedLot.get.created == 0L)
     assert(convertedLot.get.lotType == 0)
     assert(convertedLot.get.displayId == "")
     assert(convertedLot.get.saleCode == "")

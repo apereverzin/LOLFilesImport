@@ -27,7 +27,7 @@ class OptionConvertorTest extends FlatSpec with BeforeAndAfter with BuildingMeth
 
     // then
     assert(convertedOption.isSuccess)
-    assert(convertedOption.get.optionDescription == OptionDescription1)
+    assert(convertedOption.get.description == OptionDescription1)
     assert(convertedOption.get.displaySequence == 1)
   }
 

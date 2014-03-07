@@ -1,5 +1,7 @@
 CREATE TABLE LOT_COMMENT (
-  id INT PRIMARY KEY,
-  commentType VARCHAR(1),
-  comment VARCHAR(50),
-  lotId INT);
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  display_sequence INT NOT NULL,
+  comment_type VARCHAR(1) NOT NULL,
+  comment VARCHAR(50) NOT NULL,
+  lot_id INT NOT NULL
+);

@@ -11,6 +11,7 @@ class LotsConvertor {
   
   def convertLots(units: List[UnitData], lots: List[LotData], options: List[OptionData], 
       conditions: List[ConditionData], comments: List[CommentData]) = {
+    println(s"convertLots ${lots.size}")
     val surrogateNumbersAndUnits = buildSurrogateNumbersAndUnits(units)
     val surrogateNumbersAndOptions = buildSurrogateNumbersAndOptions(options)
     val surrogateNumbersAndConditions = buildSurrogateNumbersAndConditions(conditions)
@@ -18,12 +19,12 @@ class LotsConvertor {
     
     val convertedLots = new ListBuffer[Lot]
     
-    for(lot <- lots) {
-      lotConvertor.convertLot(surrogateNumbersAndUnits.get(lot.surrogateNumber).get, 
-          lot, 
-          surrogateNumbersAndOptions.get(lot.surrogateNumber).getOrElse(new ListBuffer[OptionData]).toList, 
-          surrogateNumbersAndConditions.get(lot.surrogateNumber).getOrElse(new ListBuffer[ConditionData]).toList, 
-          surrogateNumbersAndComments.get(lot.surrogateNumber).getOrElse(new ListBuffer[CommentData]).toList)
+    for(lotData <- lots) {
+      convertedLots += lotConvertor.convertLot(surrogateNumbersAndUnits.get(lotData.surrogateNumber).get, 
+          lotData, 
+          surrogateNumbersAndOptions.get(lotData.surrogateNumber).getOrElse(new ListBuffer[OptionData]).toList, 
+          surrogateNumbersAndConditions.get(lotData.surrogateNumber).getOrElse(new ListBuffer[ConditionData]).toList, 
+          surrogateNumbersAndComments.get(lotData.surrogateNumber).getOrElse(new ListBuffer[CommentData]).toList).get
     }
     
     convertedLots.toList

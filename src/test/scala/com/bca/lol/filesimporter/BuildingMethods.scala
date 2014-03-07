@@ -39,7 +39,7 @@ trait BuildingMethods {
 
     optionData.surrogateNumber = unitSurrogate
     optionData.displaySequence = displaySequence
-    optionData.optionDescription = optionDescription
+    optionData.description = optionDescription
 
     optionData
   }
@@ -48,7 +48,7 @@ trait BuildingMethods {
     val conditionData = new ConditionData
 
     conditionData.surrogateNumber = unitSurrogate
-    conditionData.inspCompCondDesc = desc
+    conditionData.description = desc
     conditionData.status = status
 
     conditionData

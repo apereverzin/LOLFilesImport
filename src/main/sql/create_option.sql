@@ -1,4 +1,6 @@
 CREATE TABLE LOT_OPTION (
-  id INT PRIMARY KEY,
-  optionDescription VARCHAR(50),
-  lotId INT);
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  display_sequence INT NOT NULL,
+  description VARCHAR(50) NOT NULL,
+  lot_id INT NOT NULL
+);

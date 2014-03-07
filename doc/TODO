@@ -1,0 +1,5 @@
+1. sbt plugin for Eclipse
+2. Logging
+3. Reading db properties from file
+4. ID of the created record
+5. SpringDAO

@@ -1,3 +1,5 @@
 package com.bca.lol.filesimporter.data
 
-trait LotElement 
+abstract class LotElement extends Identifiable with Sequenced {
+  var lotId: Int = _
+} 

@@ -1,5 +1,7 @@
 CREATE TABLE LOT_CONDITION (
-  id INT PRIMARY KEY,
-  inspCompCondDesc VARCHAR(20),
-  status VARCHAR(1),
-  lotId INT);
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  display_sequence INT NOT NULL,
+  description VARCHAR(20) NOT NULL,
+  status VARCHAR(1) NOT NULL,
+  lot_id INT NOT NULL
+);

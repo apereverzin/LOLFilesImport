@@ -8,7 +8,7 @@ class ConditionDataParser extends FileParser {
     val conditionData = new ConditionData
 
     conditionData.surrogateNumber = takeFirstField(line, 9)
-    conditionData.inspCompCondDesc = takeNextField(line, 30)
+    conditionData.description = takeNextField(line, 30)
     conditionData.status = takeNextField(line, 20)
 
     conditionData

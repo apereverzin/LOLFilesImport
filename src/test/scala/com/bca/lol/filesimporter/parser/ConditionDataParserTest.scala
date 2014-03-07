@@ -18,7 +18,7 @@ class ConditionDataParserTest extends FlatSpec with BeforeAndAfter {
 
     // then
     assert(conditionData.surrogateNumber == "000000003")
-    assert(conditionData.inspCompCondDesc == "LITERATURE PACK")
+    assert(conditionData.description == "LITERATURE PACK")
     assert(conditionData.status == "PRESENT")
   }
 }

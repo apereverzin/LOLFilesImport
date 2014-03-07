@@ -14,10 +14,10 @@ class ConditionsValidator {
     for (condition <- conditions) {
       val unitSurrogate = condition.surrogateNumber
       if (!unitSurrogateNumbers.contains(unitSurrogate)) res.addError(buildConditionUnitSurrogateError(unitSurrogate))
-      if (unitSurrogateandConditions.contains((unitSurrogate, condition.inspCompCondDesc)))
-        res.addError(buildUnitSurrogateAndConditionDuplicationError(unitSurrogate, condition.inspCompCondDesc))
+      if (unitSurrogateandConditions.contains((unitSurrogate, condition.description)))
+        res.addError(buildUnitSurrogateAndConditionDuplicationError(unitSurrogate, condition.description))
       else
-        unitSurrogateandConditions += ((unitSurrogate, condition.inspCompCondDesc))
+        unitSurrogateandConditions += ((unitSurrogate, condition.description))
     }
 
     res

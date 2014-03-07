@@ -2,9 +2,7 @@ package com.bca.lol.filesimporter.data
 
 import scala.collection.mutable.ListBuffer
 
-case class Lot(displaySequence: Int) extends Sequenced(displaySequence: Int) {
-  var id: Int = _
-  var contextId: Int = _
+case class Lot() extends Identifiable with Sequenced {
   var vendor: Int = _
   var title: String = _
   var link: String = _
@@ -22,13 +20,12 @@ case class Lot(displaySequence: Int) extends Sequenced(displaySequence: Int) {
   var status: Int = _
   var quantity: Int = _
   var locked: Int = _
-  var created: Long = _
   var lotType: Int = _
   var displayId: String = _
   var saleCode: String = _
   var saleId: Int = _
 
-  var options: List[Option] = _
-  var conditions: List[Condition] = _
-  var comments: List[Comment] = _
+  var options: List[LotOption] = _
+  var conditions: List[LotCondition] = _
+  var comments: List[LotComment] = _
 }

@@ -19,6 +19,6 @@ class OptionDataParserTest extends FlatSpec with BeforeAndAfter {
     // then
     assert(optionData.surrogateNumber == "000000002")
     assert(optionData.displaySequence == "001")
-    assert(optionData.optionDescription == "SH - 6(2bmw)stps to 148k 12/11")
+    assert(optionData.description == "SH - 6(2bmw)stps to 148k 12/11")
   }
 }

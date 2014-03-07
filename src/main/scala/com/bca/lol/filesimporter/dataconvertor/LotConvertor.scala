@@ -6,25 +6,27 @@ import scala.util.{Try, Success, Failure}
 import com.bca.lol.filesimporter.data.LotElement
 import com.bca.lol.filesimporter.directoryprocessor.ImportResult
 import scala.collection.mutable.ListBuffer
-import com.bca.lol.filesimporter.data.Option
-import com.bca.lol.filesimporter.data.Comment
-import com.bca.lol.filesimporter.data.Condition
+import com.bca.lol.filesimporter.data.LotOption
+import com.bca.lol.filesimporter.data.LotComment
+import com.bca.lol.filesimporter.data.LotCondition
 
 class LotConvertor {
   var optionConvertor = new OptionConvertor
   var conditionConvertor = new ConditionConvertor
   var commentConvertor = new CommentConvertor
   
-  def convertLot(unit: UnitData, lot: LotData, options: List[OptionData] = List[OptionData](),
+  def convertLot(unitData: UnitData, lotData: LotData, options: List[OptionData] = List[OptionData](),
     conditions: List[ConditionData] = List[ConditionData](), comments: List[CommentData] = List[CommentData]()): Try[Lot] = {
-    val displaySequence = Try[Int](Integer.parseInt(unit.displaySequence))
+    println(s"convertLot ${unitData.displaySequence}")
+
+    val displaySequence = Try[Int](Integer.parseInt(unitData.displaySequence))
 
     displaySequence match {
       case Success(s) => {
-        val lot = new Lot(displaySequence.get)
+        val lot = new Lot
 
+        lot.displaySequence = displaySequence.get
         lot.id = 0
-        lot.contextId = 0
         lot.vendor = 0
         lot.title = ""
         lot.link = ""
@@ -42,15 +44,14 @@ class LotConvertor {
         lot.status = 0
         lot.quantity = 0
         lot.locked = 0
-        lot.created = 0L
         lot.lotType = 0
         lot.displayId = ""
         lot.saleCode = ""
         lot.saleId = 0
         
-        val convertedOptions = new ListBuffer[Option]
-        val convertedConditions = new ListBuffer[Condition]
-        val convertedComments = new ListBuffer[Comment]
+        val convertedOptions = new ListBuffer[LotOption]
+        val convertedConditions = new ListBuffer[LotCondition]
+        val convertedComments = new ListBuffer[LotComment]
         options.foreach(o => convertedOptions += (optionConvertor.convertOption(o).get))
         conditions.foreach(c => convertedConditions += (conditionConvertor.convertCondition(c).get))
         comments.foreach(c => convertedComments += (commentConvertor.convertComment(c).get))
